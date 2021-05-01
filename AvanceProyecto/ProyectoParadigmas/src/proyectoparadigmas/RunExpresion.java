@@ -80,8 +80,6 @@ public class RunExpresion {
 
     public RunExpresion() {
     }
-    
-    
 
     public void leerExpresionExistente(String ruta) {
         String retornar = "";
@@ -171,61 +169,73 @@ public class RunExpresion {
     2. xF -> x#.
     3. x -> Fx
      */
-    
-    public void datosQuemados(){
-        
+    public void datosQuemados() {
+
         ArrayList<regla> reglas = new ArrayList();
-        
-        regla r1 = new regla("p1","Fx","xF","");
-        regla r2 = new regla("p2","a","x#","(p2)");
-        regla r3 = new regla("p3","x","Fx","");
-        
+
+        regla r1 = new regla("p1", "Fx", "xF", "");
+        regla r2 = new regla("p2", "x", "x#", "(p2)");
+        regla r3 = new regla("p3", "x", "Fx", "");
+
         r2.setFin(true);
-        
+
         reglas.add(r1);
         reglas.add(r2);
         reglas.add(r3);
-        
-        leerExpresion(reglas,"abc");
-        
-    }
-    
 
-    public void leerExpresion(ArrayList<regla> reglas,String expresion) {
-        /* Fabc ----- abbc
-           Fa -> ab*/
-        
-        
-        for (int estado = 0; estado < reglas.size(); estado++) {
-            
-            if(expresion.contains(reglas.get(estado).getPrimeraRegla())){
+        leerExpresion(reglas, "abc","xyz");
+
+    }
+
+    public void leerExpresion(ArrayList<regla> reglas, String expresion, String vars) {
+        /* Fabc ----- abbc         a,b,c     x = a,b,c  vbnG -> bnF
+        Fa -> ab   F,G,H */
+        int estado = 0;
+
+        while (estado < reglas.size()) {
+
+            if (expresion.contains(reglas.get(estado).getPrimeraRegla())) {
                 
                 
                 
                 
                 
                 
-                estado = cambiarEstado(estado,reglas);
-                
+                if (!reglas.get(estado).getSalto().equals("")) {
+                    estado = cambiarEstado(estado, reglas);
+                    continue;
+                }
+
             }
             
-
+            estado++;
+            
+            if(estado < reglas.size()){
+                estado = 0;
+            }
             
         }
-        
-        
-        
-        
 
     }
     
     
-    public int cambiarEstado(int estado,ArrayList<regla> reglas){
+    public boolean contiene(String expresion,int estado,ArrayList<regla> reglas,String vars){
         
+        for (int i = 0; i < expresion.length(); i++) {
+            
+            
+            
+        }
+        return true;
+        
+    }
+
+    public int cambiarEstado(int estado, ArrayList<regla> reglas) {
+
         char est = reglas.get(estado).getSalto().charAt(2);
         String es = String.valueOf(est);
         return Integer.parseInt(es);
-        
+
     }
 
 }
