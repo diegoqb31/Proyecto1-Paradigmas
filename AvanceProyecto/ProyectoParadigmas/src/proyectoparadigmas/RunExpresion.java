@@ -4,7 +4,7 @@ Diego Quiros Brenes
 Carlos Chacon Vargas
 Alessandro Fazio Perez
 Bryan Sanchez Brenes
-*/
+ */
 package proyectoparadigmas;
 
 import java.io.BufferedReader;
@@ -14,13 +14,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import proyectoparadigmas.regla;
 
 /**
  *
  * @author Carlos
  */
 public class RunExpresion {
-    
+
     private ArrayList<Character> variables = new ArrayList<>();
 
     private String expresion;
@@ -30,7 +31,7 @@ public class RunExpresion {
     private String expresionArchivo = "";
 
     Boolean m[][];
-    
+
     public void setExpresionArchivo(String expresionArchivo) {
         this.expresionArchivo = expresionArchivo;
     }
@@ -70,15 +71,18 @@ public class RunExpresion {
     public void setM(Boolean[][] m) {
         this.m = m;
     }
-    
-    
 
     public RunExpresion(String expresion, ArrayList<Character> simbolos, Boolean[][] m) {
         this.expresion = expresion;
         this.simbolos = simbolos;
         this.m = m;
     }
+
+    public RunExpresion() {
+    }
     
+    
+
     public void leerExpresionExistente(String ruta) {
         String retornar = "";
         String linea = "";
@@ -102,7 +106,7 @@ public class RunExpresion {
         this.setExpresionArchivo(retornar);
         System.out.println("Retorna la exp: " + expresionArchivo + "\n");
     }
-    
+
     public static Boolean[][] calcularatriz(ArrayList<Character> variables) {
 
         int columnas = variables.size();
@@ -124,7 +128,7 @@ public class RunExpresion {
         }
         return matriz;
     }
-    
+
     public void guardarExpresionExistente(String ruta, String cadena) throws IOException {
         File archivo = new File(ruta);
         if (!archivo.exists()) {
@@ -140,7 +144,7 @@ public class RunExpresion {
         } catch (IOException ex) {
         }
     }
-    
+
     public void imprimeMatriz(Boolean[][] matriz) { //imprime la matriz con formato
         Boolean[][] tablaVerdad = matriz;
         for (Boolean[] fila : tablaVerdad) {
@@ -152,6 +156,76 @@ public class RunExpresion {
             System.out.println();
         }
     }
+
+    /* 
+    p1. Fx -> xF
+    p2. xF -> x# (p4)
+    p3. x -> Fx
+    p4. Gx# -> #x (p4)
+    p5. #G -> ^.
+    p6. Gxy -> yGx (p4)
+    p7. x -> Gx (p4)
+    p8. # -> ^.
     
+    1. Fx -> xF
+    2. xF -> x#.
+    3. x -> Fx
+     */
+    
+    public void datosQuemados(){
+        
+        ArrayList<regla> reglas = new ArrayList();
+        
+        regla r1 = new regla("p1","Fx","xF","");
+        regla r2 = new regla("p2","a","x#","(p2)");
+        regla r3 = new regla("p3","x","Fx","");
+        
+        r2.setFin(true);
+        
+        reglas.add(r1);
+        reglas.add(r2);
+        reglas.add(r3);
+        
+        leerExpresion(reglas,"abc");
+        
+    }
+    
+
+    public void leerExpresion(ArrayList<regla> reglas,String expresion) {
+        /* Fabc ----- abbc
+           Fa -> ab*/
+        
+        
+        for (int estado = 0; estado < reglas.size(); estado++) {
+            
+            if(expresion.contains(reglas.get(estado).getPrimeraRegla())){
+                
+                
+                
+                
+                
+                
+                estado = cambiarEstado(estado,reglas);
+                
+            }
+            
+
+            
+        }
+        
+        
+        
+        
+
+    }
+    
+    
+    public int cambiarEstado(int estado,ArrayList<regla> reglas){
+        
+        char est = reglas.get(estado).getSalto().charAt(2);
+        String es = String.valueOf(est);
+        return Integer.parseInt(es);
+        
+    }
 
 }
