@@ -5,6 +5,18 @@
  */
 package proyectoparadigmas;
 
+import static archivos.guardarArchivo.guardarComo;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Carlos
@@ -94,6 +106,11 @@ public class View extends javax.swing.JFrame {
         guardarArchivo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         guardarArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/guardarArchivo.png"))); // NOI18N
         guardarArchivo.setText("Guardar");
+        guardarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarArchivoActionPerformed(evt);
+            }
+        });
         menuArchivo.add(guardarArchivo);
 
         jMenuBar.add(menuArchivo);
@@ -160,18 +177,39 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
     private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_menuAcercaActionPerformed
 
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-        // TODO add your handling code here:
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int seleccion = fileChooser.showOpenDialog(this);
+            File fichero = null;
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                fichero = fileChooser.getSelectedFile();
+            }
+            System.out.println(fichero);
+
+            if ((fichero == null) || (fichero.getName().equals(""))) {
+                JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
+            }
+            Scanner scn = new Scanner(fichero);
+            while (scn.hasNext()) {
+                jTextArea_Codigo.insert(scn.nextLine() + "\n", jTextArea_Codigo.getText().length());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_abrirArchivoActionPerformed
+
+    private void guardarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarArchivoActionPerformed
+        guardarComo(jTextArea_Codigo);
+    }//GEN-LAST:event_guardarArchivoActionPerformed
 
     /**
      * @param args the command line arguments
      */
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrirArchivo;
     private javax.swing.JMenuItem guardarArchivo;
