@@ -1,0 +1,15 @@
+
+% Marca el final de la hilera.
+
+1. Fx -> xF
+2. xF -> x#.
+3. x -> Fx
+
+-----------------------------
+
+abc     p3
+Fabc    p1
+aFbc    p1
+abFc    p1
+abcF    p2
+abc#
