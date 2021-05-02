@@ -24,24 +24,16 @@ public class parser {
     private boolean resetearvars = false;
     private boolean resetearmarkets = false;
 
-    public parser(String symbols,
-            ArrayList<String> reglas) {
-        this.symbols = symbols;
+    public parser() {
+        this.symbols = "abcdefghijklmnopqrstuvwxyz0123456789";
         this.vars = new ArrayList();
         this.vars.add("x");
         this.vars.add("y");
         this.vars.add("z");
         this.markets = new ArrayList();
         this.markets.add("β");
-        this.markets.add("δ");
-        this.reglas = reglas;
-    }
-
-    public parser() {
-
-        this("abcdefghijklmnopqrstuvwxyz0123456789",
-                new ArrayList()
-        );
+        //this.markets.add("δ");
+        this.reglas = new ArrayList();
     }
 
     @Override
@@ -52,56 +44,71 @@ public class parser {
                 + "Markets: %s%n"
                 + "Reglas:%n", symbols, vars, markets));
 
-        int pos = 1;
         for (String regla : reglas) {
-            s.append(String.format("P%d: %s%n", pos++, regla));
+            s.append(String.format("%s%n", regla));
         }
 
         return s.toString();
     }
 
     public void agregarSymbols(String s) {
-        int d = s.indexOf(":");
 
-        String ptr = s.substring(d + 1);
-        this.symbols = ptr;
+        if (!s.isEmpty()) {
+            int d = s.indexOf(":");
+
+            String ptr = s.substring(d + 1);
+            this.symbols = ptr;
+        }
+
     }
 
-    public void agregarVars(String s) {
-        int d = s.indexOf(":");
-        String ptr = s.substring(d + 1);
-        String[] p = ptr.split(",");
-        if (!resetearvars) {
-            resetearvars = true;
-            vars.clear();
-            for (int i = 0; i < p.length; i++) {
-                String v = String.valueOf(p[i]);
+    public void agregarVars(String s) throws Exception {
 
-                vars.add(v);
+        if (!s.isEmpty()) {
+            int d = s.indexOf(":");
+            String ptr = s.substring(d + 1).toLowerCase();
+            String[] p = ptr.split(",");
+            if (!resetearvars) {
+                resetearvars = true;
+                vars.clear();
+                for (int i = 0; i < p.length; i++) {
+                    String v = String.valueOf(p[i]);
 
+                    vars.add(v);
+                }
             }
 
         }
+
     }
 
-    public void agregarMarkets(String s) {
-        int d = s.indexOf(":");
-        String ptr = s.substring(d + 1);
-        String[] p = ptr.split(",");
-        if (!resetearmarkets) {
-            resetearmarkets = true;
-            markets.clear();
-            for (int i = 0; i < p.length; i++) {
-                String v = String.valueOf(p[i]);
+    public void agregarMarkets(String s) throws Exception {
 
-                markets.add(v);
+        if (!s.isEmpty()) {
+            int d = s.indexOf(":");
+            String ptr = s.substring(d + 1).toUpperCase();
+            String[] p = ptr.split(",");
+            if (!resetearmarkets) {
+                resetearmarkets = true;
+                markets.clear();
+                for (int i = 0; i < p.length; i++) {
+                    String v = String.valueOf(p[i]);
+
+                    if (!symbols.contains(v)) {
+                        markets.add(v);
+                    } else {
+                        throw new Exception("El simbolo: " + v
+                                + " ya se encuentra en symbols. "
+                                + "No se puede usar como marks");
+                    }
+
+                }
 
             }
-
         }
     }
 
     public void agregarReglas(String s) {
-
+        reglas.add(s);
     }
 }

@@ -3,6 +3,8 @@ package proyectoparadigmas;
 import archivos.abrirArchivos;
 import static archivos.guardarArchivo.guardarComo;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import parser.parser;
 
@@ -55,7 +57,7 @@ public class View extends javax.swing.JFrame {
 
         jTextArea_Codigo.setColumns(20);
         jTextArea_Codigo.setRows(5);
-        jTextArea_Codigo.setText("% Ingrese los simbolos, variables, marcadores y reglas\n\n%Ejemplo\n% Invierte una hilera.\n\n%Vars\nVars:x,y\n\n%Symbols\nSymbols:abc\n\n%markers\nmarkers:F, G\n\n%Rules\np1. Fx -> xF\np2. xF -> x# (p4)\np3. x -> Fx\np4. Gx# -> #x (p4)\np5. #G -> ^.\np6. Gxy -> yGx (p4)\np7. x -> Gx (p4)\np8. # -> ^.");
+        jTextArea_Codigo.setText("% Ingrese los simbolos, variables, marcadores y reglas\n\n%Ejemplo\n% Invierte una hilera.\n\n%Rules\np1. Fx -> xF\np2. xF -> x# (p4)\np3. x -> Fx\np4. Gx# -> #x (p4)\np5. #G -> ^.\np6. Gxy -> yGx (p4)\np7. x -> Gx (p4)\np8. # -> ^.");
         jTextArea_Codigo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextArea_CodigoMouseClicked(evt);
@@ -198,7 +200,8 @@ public class View extends javax.swing.JFrame {
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
 
         String codigo = jTextArea_Codigo.getText();
-        // System.out.println(codigo);
+
+        String sy = "", vars = "", marks = "";
         parser p = new parser();
         Scanner scn = new Scanner(codigo);
         int contador = 0;
@@ -206,20 +209,36 @@ public class View extends javax.swing.JFrame {
             String linea = scn.nextLine().trim();
 
             if ((!linea.isEmpty()) && (!linea.contains("%"))) {
-                System.out.printf("linea %d: %s%n", contador++, linea);
+               // System.out.printf("linea %d: %s%n", contador++, linea);
 
                 if (linea.toLowerCase().contains("symbols")) {
-                    p.agregarSymbols(linea);
+                    sy = linea;
                 } else if (linea.toLowerCase().contains("vars")) {
-                    p.agregarVars(linea);
+                    vars = linea;
                 } else if (linea.toLowerCase().contains("markers")) {
-                    p.agregarMarkets(linea);
+                    marks = linea;
                 } else if (linea.toLowerCase().contains("p")) {
                     p.agregarReglas(linea);
                 }
 
             }
 
+        }
+
+        p.agregarSymbols(sy);
+
+        try {
+            p.agregarVars(vars);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            // Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            p.agregarMarkets(marks);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            //Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         System.out.printf("Resultado del parser:%n%s%n", p);

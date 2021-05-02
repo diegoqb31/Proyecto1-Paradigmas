@@ -164,7 +164,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="% Ingrese los simbolos, variables, marcadores y reglas&#xa;&#xa;%Ejemplo&#xa;% Invierte una hilera.&#xa;&#xa;%Vars&#xa;Vars:x,y&#xa;&#xa;%Symbols&#xa;Symbols:abc&#xa;&#xa;%markers&#xa;markers:F, G&#xa;&#xa;%Rules&#xa;p1. Fx -&gt; xF&#xa;p2. xF -&gt; x# (p4)&#xa;p3. x -&gt; Fx&#xa;p4. Gx# -&gt; #x (p4)&#xa;p5. #G -&gt; ^.&#xa;p6. Gxy -&gt; yGx (p4)&#xa;p7. x -&gt; Gx (p4)&#xa;p8. # -&gt; ^."/>
+            <Property name="text" type="java.lang.String" value="% Ingrese los simbolos, variables, marcadores y reglas&#xa;&#xa;%Ejemplo&#xa;% Invierte una hilera.&#xa;&#xa;%Rules&#xa;p1. Fx -&gt; xF&#xa;p2. xF -&gt; x# (p4)&#xa;p3. x -&gt; Fx&#xa;p4. Gx# -&gt; #x (p4)&#xa;p5. #G -&gt; ^.&#xa;p6. Gxy -&gt; yGx (p4)&#xa;p7. x -&gt; Gx (p4)&#xa;p8. # -&gt; ^."/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextArea_CodigoMouseClicked"/>

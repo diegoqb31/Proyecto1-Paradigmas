@@ -24,7 +24,7 @@ public class RunExpresion {
     private ArrayList<Character> simbolos; //lista de simbolos
 
     private ArrayList<String> markers;
-    
+
     private String expresionArchivo = "";
 
     Boolean m[][];
@@ -186,13 +186,13 @@ public class RunExpresion {
         regla r1 = new regla("p1", "Fx", "xF", "");
         regla r2 = new regla("p2", "x", "x#", "(p2)");
         regla r3 = new regla("p3", "x", "Fx", "");
-        
+
         ArrayList<String> mar = new ArrayList();
         mar.add("F");
         mar.add("G");
-        
-        extraerSimbolos("FaabcGab",mar);
-        
+
+        extraerSimbolos("FaabcGab", mar);
+
         r2.setFin(true);
 
         reglas.add(r1);
@@ -230,42 +230,39 @@ public class RunExpresion {
 
     }
 
-    public boolean contiene(String expresion, String  pRegla, ArrayList<regla> reglas, String vars) {
+    public boolean contiene(String expresion, String pRegla, ArrayList<regla> reglas, String vars) {
         /*  aFbc  -->>>  xyz      F,G,H      
         
         pRegla -->   Fx    Fa -> Fb -> Fc 
     
-        */ 
-        
-        
+         */
+
         for (int i = 0; i < expresion.length(); i++) {
-            
-            
 
         }
         return true;
 
     }
-    
-    public String extraerSimbolos(String expresion,ArrayList<String> markers1){
-         String fina = expresion;
+
+    public String extraerSimbolos(String expresion, ArrayList<String> markers1) {
+        String fina = expresion;
         for (int i = 0; i < expresion.length(); i++) {
-            
+
             String aux = String.valueOf(expresion.charAt(i));
             for (int j = 0; j < markers1.size(); j++) {
-                
-                if(aux.equals(markers1.get(j))){
-                    
+
+                if (aux.equals(markers1.get(j))) {
+
                     fina = fina.replaceAll(markers1.get(j), "");
                     break;
-                    
+
                 }
-                
+
             }
-            
+
         }
         return fina;
-        
+
     }
 
     public int cambiarEstado(int estado, ArrayList<regla> reglas) {
