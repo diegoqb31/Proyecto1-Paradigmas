@@ -1,13 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectoparadigmas;
 
+import parser.parser;
+
 /**
- *
- * @author Carlos
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class ProyectoParadigmas {
 
@@ -46,6 +45,9 @@ public class ProyectoParadigmas {
         /* Create and display the form */
         RunExpresion r = new RunExpresion();
         r.datosQuemados();
+
+//        parser p= new parser();
+//        System.out.println(p);
     }
 
 }

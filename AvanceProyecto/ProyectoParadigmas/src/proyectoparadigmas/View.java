@@ -1,25 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proyectoparadigmas;
 
+import archivos.abrirArchivos;
 import static archivos.guardarArchivo.guardarComo;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import parser.parser;
 
 /**
- *
- * @author Carlos
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class View extends javax.swing.JFrame {
 
@@ -49,11 +40,13 @@ public class View extends javax.swing.JFrame {
         jBtn_Run = new javax.swing.JButton();
         jBtn_Debug = new javax.swing.JButton();
         jBtn_Stop = new javax.swing.JButton();
+        jBtn_Nuevo = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         abrirArchivo = new javax.swing.JMenuItem();
         guardarArchivo = new javax.swing.JMenuItem();
         menuAcerca = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Proyecto 1 Paradigmas de Programación");
@@ -62,19 +55,25 @@ public class View extends javax.swing.JFrame {
 
         jTextArea_Codigo.setColumns(20);
         jTextArea_Codigo.setRows(5);
-        jTextArea_Codigo.setText("#symbols abcd\n\n#markers ...\n\n% Marca el final de la hilera.\n\n1. Fx -> xF\n2. xF -> x#.\n3. x -> Fx\n\n");
+        jTextArea_Codigo.setText("% Ingrese los simbolos, variables, marcadores y reglas\n\n%Ejemplo\n% Invierte una hilera.\n\n%Vars\nVars:x,y\n\n%Symbols\nSymbols:abc\n\n%markers\nmarkers:F, G\n\n%Rules\np1. Fx -> xF\np2. xF -> x# (p4)\np3. x -> Fx\np4. Gx# -> #x (p4)\np5. #G -> ^.\np6. Gxy -> yGx (p4)\np7. x -> Gx (p4)\np8. # -> ^.");
+        jTextArea_Codigo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextArea_CodigoMouseClicked(evt);
+            }
+        });
         jScrollPane_Codigo.setViewportView(jTextArea_Codigo);
 
         jTextArea_Expression.setColumns(20);
         jTextArea_Expression.setRows(5);
-        jTextArea_Expression.setText("aaabbaaadda");
+        jTextArea_Expression.setText("abc");
         jScrollPane_Expression.setViewportView(jTextArea_Expression);
 
         label_Expression.setText("Expression: ");
 
+        jTextArea_Resultado.setEditable(false);
         jTextArea_Resultado.setColumns(20);
         jTextArea_Resultado.setRows(5);
-        jTextArea_Resultado.setText("abc\nFabc\naFbc\nabFc\nabcF\nabc#");
+        jTextArea_Resultado.setText("abc\nFabc\naFbc\nabFc\nabcF\nabc#\nGabc#\nbGac#   \nbcGa#   \nbc#a\nGbc#a  \ncGb#a  \nc#ba  \nGc#ba  \n#cba\ncba");
         jScrollPane_Resultado.setViewportView(jTextArea_Resultado);
 
         jBtn_Run.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/play.png"))); // NOI18N
@@ -90,6 +89,14 @@ public class View extends javax.swing.JFrame {
 
         jBtn_Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/stop.png"))); // NOI18N
         jBtn_Stop.setText("Stop");
+
+        jBtn_Nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compiler.png"))); // NOI18N
+        jBtn_Nuevo.setText("Nuevo");
+        jBtn_Nuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_NuevoActionPerformed(evt);
+            }
+        });
 
         menuArchivo.setText("Archivos");
 
@@ -115,12 +122,23 @@ public class View extends javax.swing.JFrame {
 
         jMenuBar.add(menuArchivo);
 
-        menuAcerca.setText("Acerca de..");
+        menuAcerca.setText("Información");
         menuAcerca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuAcercaActionPerformed(evt);
             }
         });
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/info.png"))); // NOI18N
+        jMenuItem1.setText("Acerca de...");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuAcerca.add(jMenuItem1);
+
         jMenuBar.add(menuAcerca);
 
         setJMenuBar(jMenuBar);
@@ -138,13 +156,15 @@ public class View extends javax.swing.JFrame {
                     .addComponent(jScrollPane_Expression, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane_Resultado, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBtn_Run, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jBtn_Nuevo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBtn_Run, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jBtn_Debug, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jBtn_Stop, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane_Resultado, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jBtn_Stop, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -163,9 +183,12 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane_Expression, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtn_Stop, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jBtn_Run, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jBtn_Debug, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBtn_Run, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBtn_Debug, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBtn_Nuevo)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -173,39 +196,80 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
-        // TODO add your handling code here:
+
+        String codigo = jTextArea_Codigo.getText();
+        // System.out.println(codigo);
+        parser p = new parser();
+        Scanner scn = new Scanner(codigo);
+        int contador = 0;
+        while (scn.hasNext()) {
+            String linea = scn.nextLine().trim();
+
+            if ((!linea.isEmpty()) && (!linea.contains("%"))) {
+                System.out.printf("linea %d: %s%n", contador++, linea);
+
+                if (linea.toLowerCase().contains("symbols")) {
+                    p.agregarSymbols(linea);
+                } else if (linea.toLowerCase().contains("vars")) {
+                    p.agregarVars(linea);
+                } else if (linea.toLowerCase().contains("markers")) {
+                    p.agregarMarkets(linea);
+                } else if (linea.toLowerCase().contains("p")) {
+                    p.agregarReglas(linea);
+                }
+
+            }
+
+        }
+
+        System.out.printf("Resultado del parser:%n%s%n", p);
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
     private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed
-       
+
     }//GEN-LAST:event_menuAcercaActionPerformed
 
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-        try {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            int seleccion = fileChooser.showOpenDialog(this);
-            File fichero = null;
-            if (seleccion == JFileChooser.APPROVE_OPTION) {
-                fichero = fileChooser.getSelectedFile();
-            }
-            System.out.println(fichero);
-
-            if ((fichero == null) || (fichero.getName().equals(""))) {
-                JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
-            }
-            Scanner scn = new Scanner(fichero);
-            while (scn.hasNext()) {
-                jTextArea_Codigo.insert(scn.nextLine() + "\n", jTextArea_Codigo.getText().length());
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        jTextArea_Codigo.setText("");
+        jTextArea_Expression.setText("");
+        jTextArea_Resultado.setText("");
+        abrirArchivos.abrirArchivo(this, jTextArea_Codigo);
     }//GEN-LAST:event_abrirArchivoActionPerformed
 
     private void guardarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarArchivoActionPerformed
         guardarComo(jTextArea_Codigo);
     }//GEN-LAST:event_guardarArchivoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JOptionPane.showMessageDialog(null,
+                "Autores:\n"
+                + "1.Diego Quiros Brenes \n"
+                + "2.Carlos Chacon Vargas \n"
+                + "3.Alessandro Fazio Perez \n"
+                + "4.Bryan Sanchez Brenes\n"
+                + "\nGrupo 3:00 p.m\n"
+                + "Paradigmas de Programación\n");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jTextArea_CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea_CodigoMouseClicked
+
+        if (!ejemplo) {
+            jTextArea_Codigo.setText("");
+            jTextArea_Expression.setText("");
+            jTextArea_Resultado.setText("");
+            ejemplo = true;
+        }
+
+    }//GEN-LAST:event_jTextArea_CodigoMouseClicked
+
+    private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
+
+        jTextArea_Codigo.setText("");
+        jTextArea_Expression.setText("");
+        jTextArea_Resultado.setText("");
+        ejemplo = false;
+
+    }//GEN-LAST:event_jBtn_NuevoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,9 +278,11 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem abrirArchivo;
     private javax.swing.JMenuItem guardarArchivo;
     private javax.swing.JButton jBtn_Debug;
+    private javax.swing.JButton jBtn_Nuevo;
     private javax.swing.JButton jBtn_Run;
     private javax.swing.JButton jBtn_Stop;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane_Codigo;
     private javax.swing.JScrollPane jScrollPane_Expression;
     private javax.swing.JScrollPane jScrollPane_Resultado;
@@ -227,4 +293,6 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenu menuAcerca;
     private javax.swing.JMenu menuArchivo;
     // End of variables declaration//GEN-END:variables
+
+    private boolean ejemplo = false;
 }

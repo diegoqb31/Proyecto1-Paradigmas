@@ -1,10 +1,3 @@
-/*
-Autores:
-Diego Quiros Brenes
-Carlos Chacon Vargas
-Alessandro Fazio Perez
-Bryan Sanchez Brenes
- */
 package proyectoparadigmas;
 
 import java.io.BufferedReader;
@@ -14,11 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import proyectoparadigmas.regla;
+import parser.regla;
 
 /**
- *
- * @author Carlos
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class RunExpresion {
 

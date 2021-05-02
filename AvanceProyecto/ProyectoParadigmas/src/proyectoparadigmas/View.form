@@ -41,11 +41,27 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuAcerca">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Acerca de.."/>
+            <Property name="text" type="java.lang.String" value="Informaci&#xf3;n"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAcercaActionPerformed"/>
           </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Alt+J"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagenes/info.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Acerca de..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -87,14 +103,17 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jBtn_Run" min="-2" pref="84" max="-2" attributes="0"/>
+                  <Component id="jScrollPane_Resultado" min="-2" pref="326" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jBtn_Nuevo" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jBtn_Run" alignment="0" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jBtn_Debug" min="-2" pref="113" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="jBtn_Stop" min="-2" pref="99" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane_Resultado" min="-2" pref="326" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -119,9 +138,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane_Expression" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="jBtn_Stop" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jBtn_Run" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="jBtn_Debug" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jBtn_Run" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                          <Component id="jBtn_Debug" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jBtn_Nuevo" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -141,8 +164,11 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="#symbols abcd&#xa;&#xa;#markers ...&#xa;&#xa;% Marca el final de la hilera.&#xa;&#xa;1. Fx -&gt; xF&#xa;2. xF -&gt; x#.&#xa;3. x -&gt; Fx&#xa;&#xa;"/>
+            <Property name="text" type="java.lang.String" value="% Ingrese los simbolos, variables, marcadores y reglas&#xa;&#xa;%Ejemplo&#xa;% Invierte una hilera.&#xa;&#xa;%Vars&#xa;Vars:x,y&#xa;&#xa;%Symbols&#xa;Symbols:abc&#xa;&#xa;%markers&#xa;markers:F, G&#xa;&#xa;%Rules&#xa;p1. Fx -&gt; xF&#xa;p2. xF -&gt; x# (p4)&#xa;p3. x -&gt; Fx&#xa;p4. Gx# -&gt; #x (p4)&#xa;p5. #G -&gt; ^.&#xa;p6. Gxy -&gt; yGx (p4)&#xa;p7. x -&gt; Gx (p4)&#xa;p8. # -&gt; ^."/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextArea_CodigoMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -157,7 +183,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="aaabbaaadda"/>
+            <Property name="text" type="java.lang.String" value="abc"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -176,9 +202,10 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="jTextArea_Resultado">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="abc&#xa;Fabc&#xa;aFbc&#xa;abFc&#xa;abcF&#xa;abc#"/>
+            <Property name="text" type="java.lang.String" value="abc&#xa;Fabc&#xa;aFbc&#xa;abFc&#xa;abcF&#xa;abc#&#xa;Gabc#&#xa;bGac#   &#xa;bcGa#   &#xa;bc#a&#xa;Gbc#a  &#xa;cGb#a  &#xa;c#ba  &#xa;Gc#ba  &#xa;#cba&#xa;cba"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -209,6 +236,17 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Stop"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jBtn_Nuevo">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagenes/compiler.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Nuevo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_NuevoActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
