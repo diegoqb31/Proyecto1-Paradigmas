@@ -43,6 +43,8 @@ public class ProyectoParadigmas {
         });
 
         /* Create and display the form */
+        String h = "F FFjjjj";
+        h = h.replaceAll("F", "");
         RunExpresion r = new RunExpresion();
         r.datosQuemados();
 
