@@ -10,14 +10,14 @@ package proyectoparadigmas;
  * @author Carlos
  */
 public class regla {
-    
+
     String identicador;
     String primeraRegla;
     String trancision;
     String salto;
     boolean fin;
 
-    public regla(String identicador, String primeraRegla, String trancision,String salto) {
+    public regla(String identicador, String primeraRegla, String trancision, String salto) {
         this.identicador = identicador;
         this.primeraRegla = primeraRegla;
         this.trancision = trancision;
@@ -63,7 +63,5 @@ public class regla {
     public String getSalto() {
         return salto;
     }
-  
-    
-    
+
 }

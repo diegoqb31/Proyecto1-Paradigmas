@@ -4,18 +4,14 @@
  * and open the template in the editor.
  */
 package proyectoparadigmas;
-import proyectoparadigmas.View;
-import proyectoparadigmas.RunExpresion;
+
 /**
  *
  * @author Carlos
  */
 public class ProyectoParadigmas {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+        public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -41,15 +37,15 @@ public class ProyectoParadigmas {
         //</editor-fold>
 
         /* Create and display the form */
-        RunExpresion r = new RunExpresion();
-        r.datosQuemados();
-        
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new View().setVisible(true);
             }
         });
+        
+         /* Create and display the form */
+        RunExpresion r = new RunExpresion();
+        r.datosQuemados();
     }
-    
+
 }

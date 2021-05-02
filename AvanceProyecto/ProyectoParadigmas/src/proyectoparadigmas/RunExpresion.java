@@ -183,7 +183,7 @@ public class RunExpresion {
         reglas.add(r2);
         reglas.add(r3);
 
-        leerExpresion(reglas, "abc","xyz");
+        leerExpresion(reglas, "abc", "xyz");
 
     }
 
@@ -195,39 +195,31 @@ public class RunExpresion {
         while (estado < reglas.size()) {
 
             if (expresion.contains(reglas.get(estado).getPrimeraRegla())) {
-                
-                
-                
-                
-                
-                
+
                 if (!reglas.get(estado).getSalto().equals("")) {
                     estado = cambiarEstado(estado, reglas);
                     continue;
                 }
 
             }
-            
+
             estado++;
-            
-            if(estado < reglas.size()){
+
+            if (estado < reglas.size()) {
                 estado = 0;
             }
-            
+
         }
 
     }
-    
-    
-    public boolean contiene(String expresion,int estado,ArrayList<regla> reglas,String vars){
-        
+
+    public boolean contiene(String expresion, int estado, ArrayList<regla> reglas, String vars) {
+
         for (int i = 0; i < expresion.length(); i++) {
-            
-            
-            
+
         }
         return true;
-        
+
     }
 
     public int cambiarEstado(int estado, ArrayList<regla> reglas) {
