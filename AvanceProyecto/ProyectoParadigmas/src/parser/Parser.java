@@ -92,7 +92,6 @@ public class Parser {
                 throw new Exception("El SYMBOL \"" + symbol + "\" ya fue declarado anteriormente");
             }
 
-            this.checkVars(symbol, "SYMBOL");
             this.checkMarkers(symbol, "SYMBOL");
         }
     }
@@ -109,8 +108,7 @@ public class Parser {
             if (!this.vars.add(var)) {
                 throw new Exception("La VAR \"" + var + "\" ya fue declarada anteriormente");
             }
-
-            this.checkSymbols(var, "VAR");
+            
             this.checkMarkers(var, "VAR");
         }
     }
@@ -174,7 +172,7 @@ public class Parser {
      * declaraciones de symbols, vars, markers
      */
     private void leerLinea(String linea) throws Exception {
-        linea = linea.toLowerCase().replaceAll("^\\s+", "").replaceAll("\\s+$", "");
+        linea = linea.replaceAll("^\\s+", "").replaceAll("\\s+$", "");
         char primerCaracter = linea.charAt(0);
 
         if (primerCaracter == '%') {
@@ -192,30 +190,18 @@ public class Parser {
 
             switch (tipo) {
                 case "symbols":
-                    if (parseSymbols) {
-                        throw new Exception("Error al parsear SYMBOLS, ya fueron declarados anteriormente");
-                    }
-
                     this.agregarSymbols(linea.substring(linea.indexOf(" ") + 1));
                     this.parseSymbols = true;
 
                     break;
 
                 case "vars":
-                    if (parseVars) {
-                        throw new Exception("Error al parsear VARS, ya fueron declaradas anteriormente");
-                    }
-                    
                     this.agregarVars(linea.substring(linea.indexOf(" ") + 1));
                     this.parseVars = true;
 
                     break;
 
                 case "markers":
-                    if (parseMarkers) {
-                        throw new Exception("Error al parsear MARKERS, ya fueron declarados anteriormente");
-                    }
-                    
                     this.agregarMarkers(linea.substring(linea.indexOf(" ") + 1));
                     this.parseMarkers = true;
                     
