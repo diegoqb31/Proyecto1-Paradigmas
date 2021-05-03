@@ -222,7 +222,7 @@ public class Parser {
                     break;
 
                 default:
-                    throw new Exception("Tipo no definido, tiene que ser SYMBOL, VAR o MARKER");
+                    throw new Exception("Tipo no definido, tiene que ser SYMBOLS, VARS o MARKERS");
             }
 
         } else {
