@@ -1,12 +1,9 @@
 package proyectoparadigmas;
 
-import archivos.abrirArchivos;
-import static archivos.guardarArchivo.guardarComo;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import archivos.AbrirArchivos;
+import static archivos.GuardarArchivo.guardarComo;
 import javax.swing.JOptionPane;
-import parser.parser;
+import parser.Parser;
 
 /**
  * @author Carlos Chacon Vargas
@@ -198,50 +195,16 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
-
-        String codigo = jTextArea_Codigo.getText();
-
-        String sy = "", vars = "", marks = "";
-        parser p = new parser();
-        Scanner scn = new Scanner(codigo);
-        int contador = 0;
-        while (scn.hasNext()) {
-            String linea = scn.nextLine().trim();
-
-            if ((!linea.isEmpty()) && (!linea.contains("%"))) {
-               // System.out.printf("linea %d: %s%n", contador++, linea);
-
-                if (linea.toLowerCase().contains("symbols")) {
-                    sy = linea;
-                } else if (linea.toLowerCase().contains("vars")) {
-                    vars = linea;
-                } else if (linea.toLowerCase().contains("markers")) {
-                    marks = linea;
-                } else if (linea.toLowerCase().contains("p")) {
-                    p.agregarReglas(linea);
-                }
-
-            }
-
-        }
-
-        p.agregarSymbols(sy);
-
+        Parser parser = new Parser();
+        
         try {
-            p.agregarVars(vars);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            // Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+            parser.leerCodigo(jTextArea_Codigo.getText());
+            
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        try {
-            p.agregarMarkets(marks);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            //Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        System.out.printf("Resultado del parser:%n%s%n", p);
+        System.out.printf("Resultado del parser:%n%s%n", parser);
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
     private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed
@@ -252,7 +215,7 @@ public class View extends javax.swing.JFrame {
         jTextArea_Codigo.setText("");
         jTextArea_Expression.setText("");
         jTextArea_Resultado.setText("");
-        abrirArchivos.abrirArchivo(this, jTextArea_Codigo);
+        AbrirArchivos.abrirArchivo(this, jTextArea_Codigo);
     }//GEN-LAST:event_abrirArchivoActionPerformed
 
     private void guardarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarArchivoActionPerformed

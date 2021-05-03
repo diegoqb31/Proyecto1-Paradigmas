@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package parser;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * @author Carlos Chacon Vargas
@@ -15,34 +11,35 @@ import java.util.List;
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
  */
-public class parser {
+public class Parser {
 
-    private String symbols;
-    private List<String> vars;
-    private List<String> markets;
-    private List<String> reglas;
-    private boolean resetearvars = false;
-    private boolean resetearmarkets = false;
+    private final HashSet<Character> symbols, vars, markers;
+    private final HashSet<String> reglas;
+    private boolean parseMarkers, parseSymbols, parseVars;
 
-    public parser() {
-        this.symbols = "abcdefghijklmnopqrstuvwxyz0123456789";
-        this.vars = new ArrayList();
-        this.vars.add("x");
-        this.vars.add("y");
-        this.vars.add("z");
-        this.markets = new ArrayList();
-        this.markets.add("β");
-        //this.markets.add("δ");
-        this.reglas = new ArrayList();
+    /**
+     * Constructor para la clase Parser
+     */
+    public Parser() {
+        this.symbols = new HashSet();
+        this.vars = new HashSet();
+        this.markers = new HashSet();
+        this.reglas = new HashSet();
+
+        this.parseSymbols = false;
+        this.parseVars = false;
+        this.parseMarkers = false;
     }
 
+    /**
+     * Sobreescribe el método {@link #toString()}
+     *
+     * @return Returna un String con los symbols, vars y markers
+     */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(String.format("Symbols: %s%n"
-                + "Vars: %s%n"
-                + "Markets: %s%n"
-                + "Reglas:%n", symbols, vars, markets));
+        s.append(String.format(" Symbols: %s%n Vars: %s%n Markers: %s%n Reglas:%n", symbols, vars, markers));
 
         for (String regla : reglas) {
             s.append(String.format("%s%n", regla));
@@ -51,64 +48,243 @@ public class parser {
         return s.toString();
     }
 
-    public void agregarSymbols(String s) {
-
-        if (!s.isEmpty()) {
-            int d = s.indexOf(":");
-
-            String ptr = s.substring(d + 1);
-            this.symbols = ptr;
+    /**
+     * Setea los valores por defecto en caso de que no se sobreescriban en el
+     * código
+     */
+    private void setValoresDefecto() throws Exception {
+        if (!parseSymbols) {
+            for (char c : "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray()) {
+                this.checkVars(c, "SYMBOL");
+                this.checkMarkers(c, "SYMBOL");
+                this.symbols.add(c);
+            }
         }
 
+        if (!parseVars) {
+            for (char c : "wxyz".toCharArray()) {
+                this.checkSymbols(c, "VAR");
+                this.checkMarkers(c, "VAR");
+                this.vars.add(c);
+
+            }
+        }
+
+        if (!parseMarkers) {
+            for (char c : "αβγδ".toCharArray()) {
+                this.checkSymbols(c, "MARKER");
+                this.checkVars(c, "MARKER");
+                this.markers.add(c);
+            }
+        }
     }
 
-    public void agregarVars(String s) throws Exception {
-
-        if (!s.isEmpty()) {
-            int d = s.indexOf(":");
-            String ptr = s.substring(d + 1).toLowerCase();
-            String[] p = ptr.split(",");
-            if (!resetearvars) {
-                resetearvars = true;
-                vars.clear();
-                for (int i = 0; i < p.length; i++) {
-                    String v = String.valueOf(p[i]);
-
-                    vars.add(v);
-                }
+    /**
+     * Agrega los symbols al HashSet de symbols
+     *
+     * @param symbols El String con todos los symbols
+     * @throws Exception Tira una excepción en caso de que el symbol haya sido
+     * declarado anteriormente
+     */
+    private void agregarSymbols(String symbols) throws Exception {
+        for (char symbol : symbols.toCharArray()) {
+            if (!this.symbols.add(symbol)) {
+                throw new Exception("El SYMBOL \"" + symbol + "\" ya fue declarado anteriormente");
             }
 
+            this.checkVars(symbol, "SYMBOL");
+            this.checkMarkers(symbol, "SYMBOL");
         }
-
     }
 
-    public void agregarMarkets(String s) throws Exception {
+    /**
+     * Agrega las vars al HashSet de vars
+     *
+     * @param vars El String con todos las vars
+     * @throws Exception Tira una excepción en caso de que la var haya sido
+     * declarado anteriormente
+     */
+    private void agregarVars(String vars) throws Exception {
+        for (char var : vars.toCharArray()) {
+            if (!this.vars.add(var)) {
+                throw new Exception("La VAR \"" + var + "\" ya fue declarada anteriormente");
+            }
 
-        if (!s.isEmpty()) {
-            int d = s.indexOf(":");
-            String ptr = s.substring(d + 1).toUpperCase();
-            String[] p = ptr.split(",");
-            if (!resetearmarkets) {
-                resetearmarkets = true;
-                markets.clear();
-                for (int i = 0; i < p.length; i++) {
-                    String v = String.valueOf(p[i]);
+            this.checkSymbols(var, "VAR");
+            this.checkMarkers(var, "VAR");
+        }
+    }
 
-                    if (!symbols.contains(v)) {
-                        markets.add(v);
-                    } else {
-                        throw new Exception("El simbolo: " + v
-                                + " ya se encuentra en symbols. "
-                                + "No se puede usar como marks");
+    /**
+     * Agrega los markers al HashSet de markers
+     *
+     * @param markers El String con todos los markers
+     * @throws Exception Tira una excepción en caso de que el marker haya sido
+     * declarado anteriormente
+     */
+    private void agregarMarkers(String markers) throws Exception {
+        for (char marker : markers.toCharArray()) {
+            if (!this.markers.add(marker)) {
+                throw new Exception("El MARKER \"" + marker + "\" ya fue declarado anteriormente");
+            }
+
+            this.checkSymbols(marker, "MARKER");
+            this.checkVars(marker, "MARKER");
+        }
+    }
+
+    /**
+     * Agrega los symbols al HashSet de reglas
+     *
+     * @param reglas El String con todas los reglas
+     * @throws Exception Tira una excepción en caso de que la regla haya sido
+     * declarado anteriormente
+     */
+    private void agregarReglas(String reglas) throws Exception {
+        for (String regla : Arrays.asList(reglas)) {
+            if (!this.reglas.add(regla)) {
+                throw new Exception("La regla \"" + markers + "\" ya fue declarada anteriormente");
+            }
+        }
+    }
+
+    private void checkSymbols(char caracter, String tipo) throws Exception {
+        if (this.symbols.contains(caracter)) {
+            throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de SYMBOLS");
+        }
+    }
+
+    private void checkVars(char caracter, String tipo) throws Exception {
+        if (this.vars.contains(caracter)) {
+            throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de VARS");
+        }
+    }
+
+    private void checkMarkers(char caracter, String tipo) throws Exception {
+        if (this.markers.contains(caracter)) {
+            throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de MARKERS");
+        }
+    }
+
+    /**
+     * Parsea cada línea del código
+     *
+     * @param linea La línea de código a parsear
+     * @throws Exception Tira una excepción en caso de que haya dos
+     * declaraciones de symbols, vars, markers
+     */
+    private void leerLinea(String linea) throws Exception {
+        linea = linea.toLowerCase().replaceAll("^\\s+", "").replaceAll("\\s+$", "");
+        char primerCaracter = linea.charAt(0);
+
+        if (primerCaracter == '%') {
+            return;
+        }
+
+        if (primerCaracter == '#') {
+            String tipo = "";
+            try {
+                tipo = linea.substring(1, linea.indexOf(" "));
+                
+            } catch (Exception e) {
+                throw new Exception("Error al parsear " + linea);
+            }
+
+            switch (tipo) {
+                case "symbols":
+                    if (parseSymbols) {
+                        throw new Exception("Error al parsear SYMBOLS, ya fueron declarados anteriormente");
                     }
 
-                }
+                    this.agregarSymbols(linea.substring(linea.indexOf(" ") + 1));
+                    this.parseSymbols = true;
 
+                    break;
+
+                case "vars":
+                    if (parseVars) {
+                        throw new Exception("Error al parsear VARS, ya fueron declaradas anteriormente");
+                    }
+                    
+                    this.agregarVars(linea.substring(linea.indexOf(" ") + 1));
+                    this.parseVars = true;
+
+                    break;
+
+                case "markers":
+                    if (parseMarkers) {
+                        throw new Exception("Error al parsear MARKERS, ya fueron declarados anteriormente");
+                    }
+                    
+                    this.agregarMarkers(linea.substring(linea.indexOf(" ") + 1));
+                    this.parseMarkers = true;
+                    
+                    break;
+
+                default:
+                    throw new Exception("Tipo no definido, tiene que ser SYMBOL, VAR o MARKER");
             }
+
+        } else {
+            this.agregarReglas(linea);
         }
     }
 
-    public void agregarReglas(String s) {
-        reglas.add(s);
+    /**
+     * Normaliza el código
+     *
+     * @param codigo El código de entrada
+     * @throws Exception Tira una excepcion en caso de que
+     * {@link #leerLinea(java.lang.String)} tire una excepción
+     */
+    public void leerCodigo(String codigo) throws Exception {
+        codigo = codigo.replaceAll("(?m)^[ \t]*\r?\n", "");
+
+        try (BufferedReader reader = new BufferedReader(new StringReader(codigo))) {
+            String linea = reader.readLine();
+
+            while (linea != null) {
+                this.leerLinea(linea);
+                linea = reader.readLine();
+            }
+        }
+
+        this.setValoresDefecto();
+    }
+
+    /**
+     * Get symbols
+     *
+     * @return El HashSet de symbols
+     */
+    public HashSet<Character> getSymbols() {
+        return symbols;
+    }
+
+    /**
+     * Get vars
+     *
+     * @return El HashSet de vars
+     */
+    public HashSet<Character> getVars() {
+        return vars;
+    }
+
+    /**
+     * Get markers
+     *
+     * @return El HashSet de markers
+     */
+    public HashSet<Character> getMarkers() {
+        return markers;
+    }
+
+    /**
+     * Get reglas
+     *
+     * @return El HashSet de reglas
+     */
+    public HashSet<String> getReglas() {
+        return reglas;
     }
 }

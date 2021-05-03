@@ -7,7 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import parser.regla;
+import parser.Regla;
+import parser.Parser;
 
 /**
  * @author Carlos Chacon Vargas
@@ -17,13 +18,8 @@ import parser.regla;
  */
 public class RunExpresion {
 
-    private ArrayList<String> variables = new ArrayList<>();
-
     private String expresion;
-
-    private ArrayList<Character> simbolos; //lista de simbolos
-
-    private ArrayList<String> markers;
+    private Parser parser;
 
     private String expresionArchivo = "";
 
@@ -31,22 +27,6 @@ public class RunExpresion {
 
     public void setExpresionArchivo(String expresionArchivo) {
         this.expresionArchivo = expresionArchivo;
-    }
-
-    public ArrayList<String> getVariables() {
-        return variables;
-    }
-
-    public String getExpresion() {
-        return expresion;
-    }
-
-    public ArrayList<String> getMarkers() {
-        return markers;
-    }
-
-    public ArrayList<Character> getSimbolos() {
-        return simbolos;
     }
 
     public String getExpresionArchivo() {
@@ -57,30 +37,18 @@ public class RunExpresion {
         return m;
     }
 
-    public void setVariables(ArrayList<String> variables) {
-        this.variables = variables;
-    }
-
     public void setExpresion(String expresion) {
         this.expresion = expresion;
-    }
-
-    public void setSimbolos(ArrayList<Character> simbolos) {
-        this.simbolos = simbolos;
     }
 
     public void setM(Boolean[][] m) {
         this.m = m;
     }
 
-    public void setMarkers(ArrayList<String> markers) {
-        this.markers = markers;
-    }
-
-    public RunExpresion(String expresion, ArrayList<Character> simbolos, Boolean[][] m) {
+    public RunExpresion(String expresion, Boolean[][] m, String codigo) {
         this.expresion = expresion;
-        this.simbolos = simbolos;
         this.m = m;
+        this.parser = new Parser();
     }
 
     public RunExpresion() {
@@ -181,11 +149,11 @@ public class RunExpresion {
      */
     public void datosQuemados() {
 
-        ArrayList<regla> reglas = new ArrayList();
+        ArrayList<Regla> reglas = new ArrayList();
 
-        regla r1 = new regla("p1", "Fx", "xF", "");
-        regla r2 = new regla("p2", "x", "x#", "(p2)");
-        regla r3 = new regla("p3", "x", "Fx", "");
+        Regla r1 = new Regla("p1", "Fx", "xF", "");
+        Regla r2 = new Regla("p2", "x", "x#", "(p2)");
+        Regla r3 = new Regla("p3", "x", "Fx", "");
 
         ArrayList<String> mar = new ArrayList();
         mar.add("F");
@@ -200,11 +168,9 @@ public class RunExpresion {
         reglas.add(r3);
 
         leerExpresion(reglas, "abc", "xyz");
-        this.setMarkers(mar);
-
     }
 
-    public void leerExpresion(ArrayList<regla> reglas, String expresion, String vars) {
+    public void leerExpresion(ArrayList<Regla> reglas, String expresion, String vars) {
         /* Fabc ----- abbc         a,b,c     x = a,b,c  vbnG -> bnF
         Fa -> ab   F,G,H */
         int estado = 0;
@@ -230,7 +196,7 @@ public class RunExpresion {
 
     }
 
-    public boolean contiene(String expresion, String pRegla, ArrayList<regla> reglas, String vars) {
+    public boolean contiene(String expresion, String pRegla, ArrayList<Regla> reglas, String vars) {
         /*  aFbc  -->>>  xyz      F,G,H      
         
         pRegla -->   Fx    Fa -> Fb -> Fc 
@@ -265,7 +231,7 @@ public class RunExpresion {
 
     }
 
-    public int cambiarEstado(int estado, ArrayList<regla> reglas) {
+    public int cambiarEstado(int estado, ArrayList<Regla> reglas) {
 
         char est = reglas.get(estado).getSalto().charAt(2);
         String es = String.valueOf(est);

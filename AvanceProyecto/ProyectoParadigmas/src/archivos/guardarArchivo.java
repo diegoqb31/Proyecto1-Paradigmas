@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  * @author Carlos Chacon Vargas
@@ -13,27 +14,34 @@ import javax.swing.JOptionPane;
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
  */
-public class guardarArchivo {
+public class GuardarArchivo {
 
-    public static void guardarComo(javax.swing.JTextArea jTextArea_Codigo) {
-
+    /**
+    * Guarda un archivo .txt con el contenido del TextArea
+    * @param jTextArea_Codigo Contenido del TextArea
+    */
+    public static void guardarComo(JTextArea jTextArea_Codigo) {
         JFileChooser guardar = new JFileChooser();
+        
         guardar.showSaveDialog(null);
         guardar.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         File archivo = guardar.getSelectedFile();
 
         guardarFichero(jTextArea_Codigo.getText(), archivo);
-
     }
 
-    private static void guardarFichero(String cadena, File archivo) {
-
+    /**
+     * Guarda el archivo .txt en la ruta
+     * @param codigo El contenido del código
+     * @param archivo El archivo seleccionado
+     */
+    private static void guardarFichero(String codigo, File archivo) {
         FileWriter escribir;
+        
         try {
-
             escribir = new FileWriter(archivo, true);
-            escribir.write(cadena);
+            escribir.write(codigo);
             escribir.close();
 
         } catch (FileNotFoundException ex) {
