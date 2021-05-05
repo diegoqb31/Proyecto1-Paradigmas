@@ -1,7 +1,8 @@
 package proyectoparadigmas;
 
 import archivos.AbrirArchivos;
-import static archivos.guardarArchivo.guardarComo;
+import static archivos.GuardarArchivo.guardarComo;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import parser.Parser;
 
@@ -196,20 +197,33 @@ public class View extends javax.swing.JFrame {
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
         Parser parser = new Parser();
-        
+
         try {
             parser.leerCodigo(jTextArea_Codigo.getText());
-            
-        } catch(Exception e){
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        RunExpresion expresion = new RunExpresion(parser);    
+
+        RunExpresion expresion = new RunExpresion(parser, "abc");
 
         System.out.printf("Resultado del parser:%n%s%n", parser);
-        System.out.printf("Resultado del parser:%n%s%n", expresion.datosQuemados());
-        
+
+        String resultadoPrueba = mostrarResultado(expresion.obtenerResultadoValoresPrueba());
+        System.out.printf("Resultado del Run Expression:%n%s%n", resultadoPrueba);
+        jTextArea_Resultado.setText(resultadoPrueba);
+
     }//GEN-LAST:event_jBtn_RunActionPerformed
+
+    private String mostrarResultado(ArrayList<String> resultado) {
+        StringBuilder s = new StringBuilder();
+
+        for (String string : resultado) {
+            s.append(String.format("%s%n", string));
+        }
+
+        return s.toString();
+    }
 
     private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed
 

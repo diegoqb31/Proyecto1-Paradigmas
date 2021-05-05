@@ -14,15 +14,16 @@ import javax.swing.JTextArea;
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
  */
-public class guardarArchivo {
+public class GuardarArchivo {
 
     /**
-    * Guarda un archivo .txt con el contenido del TextArea
-    * @param jTextArea_Codigo Contenido del TextArea
-    */
+     * Guarda un archivo .txt con el contenido del TextArea
+     *
+     * @param jTextArea_Codigo Contenido del TextArea
+     */
     public static void guardarComo(JTextArea jTextArea_Codigo) {
         JFileChooser guardar = new JFileChooser();
-        
+
         guardar.showSaveDialog(null);
         guardar.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
@@ -33,12 +34,13 @@ public class guardarArchivo {
 
     /**
      * Guarda el archivo .txt en la ruta
+     *
      * @param codigo El contenido del código
      * @param archivo El archivo seleccionado
      */
     private static void guardarFichero(String codigo, File archivo) {
         FileWriter escribir;
-        
+
         try {
             escribir = new FileWriter(archivo, true);
             escribir.write(codigo);
@@ -51,4 +53,3 @@ public class guardarArchivo {
         }
     }
 }
-

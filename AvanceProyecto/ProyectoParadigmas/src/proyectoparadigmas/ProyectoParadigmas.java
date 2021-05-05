@@ -1,6 +1,6 @@
 package proyectoparadigmas;
+
 import proyectoparadigmas.RunExpresion;
-      
 
 /**
  * @author Carlos Chacon Vargas
@@ -16,14 +16,5 @@ public class ProyectoParadigmas {
                 new View().setVisible(true);
             }
         });
-
-     //   RunExpresion runExpresion = new RunExpresion();
-     //   runExpresion.datosQuemados();
     }
 }
-
-    
-    
-
-
-

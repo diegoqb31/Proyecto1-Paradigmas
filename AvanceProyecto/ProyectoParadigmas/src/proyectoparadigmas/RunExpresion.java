@@ -7,154 +7,55 @@ Bryan Sanchez Brenes
  */
 package proyectoparadigmas;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import parser.regla;
+import parser.Regla;
 import parser.Parser;
+import parser.ValoresPruebaParser;
 
 /**
- *
- * @author Carlos
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class RunExpresion {
 
-    private ArrayList<String> variables = new ArrayList<>();
+    private ArrayList<String> simbolos;
+    private ArrayList<String> variables;
+    private ArrayList<String> markers;
+    private ArrayList<Regla> reglas;
+    private String expresion;
 
-    private String expresionPrincipal;
-
-    private ArrayList<String> simbolos = new ArrayList<>(); //lista de simbolos
-
-    private ArrayList<String> markers = new ArrayList<>();
-
-    private String expresionArchivo = "";
-    
-    Parser parser;
-
-
-    public void setExpresionArchivo(String expresionArchivo) {
-        this.expresionArchivo = expresionArchivo;
-    }
-
-    public ArrayList<String> getVariables() {
-        return variables;
-    }
-
-    public String getExpresion() {
-        return expresionPrincipal;
-    }
-
-    public ArrayList<String> getMarkers() {
-        return markers;
-    }
-
-    public ArrayList<String> getSimbolos() {
-        return simbolos;
-    }
-
-    public String getExpresionArchivo() {
-        return expresionArchivo;
-    }
-
-
-    public void setVariables(ArrayList<String> variables) {
-        this.variables = variables;
-    }
-
-    public void setExpresion(String expresion) {
-        this.expresionPrincipal = expresion;
-    }
-
-    public void setSimbolos(ArrayList<String> simbolos) {
-        this.simbolos = simbolos;
-    }
-    public void setMarkers(ArrayList<String> markers) {
-        this.markers = markers;
-    }
-
-    public RunExpresion(String expresion, ArrayList<String> simbolos, Parser parser) {
-        this.expresionPrincipal = expresion;
-        this.simbolos = simbolos;
-        this.parser = parser;
-    }
-
-    public RunExpresion(Parser parser) {
-        this.parser = parser;
-        simbolos = parser.getSymbols();
-        markers = parser.getMarkers();
-        variables = parser.getVars();
-    }
-
-    /*
-    p1. Fx -> xF
-    p2. xF -> x# (p4)
-    p3. x -> Fx
-    p4. Gx# -> #x (p4)
-    p5. #G -> ^.
-    p6. Gxy -> yGx (p4)
-    p7. x -> Gx (p4)
-    p8. # -> ^.
-
-    1. Fx -> xF
-    2. xF -> x#.
-    3. x -> Fx
-     */
-    public ArrayList<String> datosQuemados() {
-        
-        
-
-        ArrayList<regla> reglas = new ArrayList();
-
-        regla r1 = new regla("p1", "Fx", "xF", "");
-        regla r2 = new regla("p2", "xF", "x#", "(p4)");
-        regla r3 = new regla("p3", "x", "Fx", "");
-        regla r4 = new regla("p4", "Gx#", "#x", "(p4)");
-        regla r5 = new regla("p5", "#G", ".", "");
-        regla r6 = new regla("p6", "Gxy", "yGx", "(p4)");
-        regla r7 = new regla("p7", "x", "Gx", "(p4)");
-        regla r8 = new regla("p8", "#", ".", "");
-
-        ArrayList<String> mar = new ArrayList();
-        mar.add("F");
-        mar.add("G");
-        mar.add("#");
-        mar.add("^");
-
-        // extraerSimbolos("FaabcGabbbbaaacc", mar);
-        variables.add("x");
-        variables.add("y");
-        variables.add("z");
-        variables.add("w");
-
-        simbolos.add("a");
-        simbolos.add("b");
-        simbolos.add("c");
-
-        this.setMarkers(mar);
-
-        r2.setFin(true);
-
-        reglas.add(r1);
-        reglas.add(r2);
-        reglas.add(r3);
-        reglas.add(r4);
-        reglas.add(r5);
-        reglas.add(r6);
-        reglas.add(r7);
-        reglas.add(r8);
-
-        return leerExpresion(reglas, "abc");
+    public RunExpresion(Parser parser, String expresion) {
+        this.simbolos = parser.getSymbols();
+        this.variables = parser.getVars();
+        this.markers = parser.getMarkers();
+        this.reglas = new ArrayList<>();
+        // this.reglas=parser.getReglas();
+        this.expresion = expresion;
 
     }
 
-    public ArrayList<String> leerExpresion(ArrayList<regla> reglas, String expresion) {
-    /* p1. Fx -> xF
+    public ArrayList<String> obtenerResultado() {
+        return leerExpresion();
+    }
+
+    public ArrayList<String> obtenerResultadoValoresPrueba() {
+        ValoresPruebaParser parser = ValoresPruebaParser.getIntance();
+
+        this.simbolos = parser.getSymbols();
+        this.variables = parser.getVars();
+        this.markers = parser.getMarkers();
+        this.reglas = parser.getReglas();
+        this.expresion = parser.getExpression();
+
+        return leerExpresion();
+    }
+
+    private ArrayList<String> leerExpresion() {
+        /* 
+       p1. Fx -> xF
        p2. xF -> x# (p4)
        p3. x -> Fx
        p4. Gx# -> #x (p4)
@@ -171,16 +72,17 @@ public class RunExpresion {
         int estado = 0;
         String aux = "";
         ArrayList<String> resultado = new ArrayList();
+        resultado.add("Expresion-> " +expresion);
         while (estado < reglas.size()) {
             aux = contiene(expresion, reglas.get(estado).getPrimeraRegla());
             if (!aux.equals("")) {
 
                 expresion = expresion.replaceFirst(aux, sRegla(aux, reglas.get(estado).getTrancision()));
-                resultado.add(expresion);
-                
+                resultado.add(reglas.get(estado).getIdenticador()+"-> "+ expresion);
+
                 if (expresion.contains(".")) {
                     expresion = expresion.replace(".", "");
-                    resultado.add(expresion);
+                    resultado.add("Resultado-> " +expresion);
                     return resultado;
                 }
 
@@ -204,7 +106,7 @@ public class RunExpresion {
 
     }
 
-    public String sRegla(String pR, String sR) {
+    private String sRegla(String pR, String sR) {
         /* sR -> yGx --> aGb  zyGx <-- Gabc  a:x:0  b:y:1 c:z:2
            pR -> Gab --> bGa                   1      0    ...             */
 
@@ -240,7 +142,7 @@ public class RunExpresion {
 
     }
 
-    public String verficarPosicionVariable(String varUtilizadas, ArrayList<String> sim) {
+    private String verficarPosicionVariable(String varUtilizadas, ArrayList<String> sim) {
         /* a x b y   Gab --> bGa  Gxy --> yGx  
         
         Gabc --> abc --> Gxyz -->   bx ay cz  --> yzGx --> acGb*/
@@ -262,7 +164,7 @@ public class RunExpresion {
         return r;
     }
 
-    public String contiene(String expresion, String pRegla) {
+    private String contiene(String expresion, String pRegla) {
 
         int contSim = 0;
         String pR = pRegla;
@@ -300,7 +202,7 @@ public class RunExpresion {
 
     }
 
-    public boolean isVar(String sim, ArrayList<String> repetidos) {
+    private boolean isVar(String sim, ArrayList<String> repetidos) {
 
         for (int i = 0; i < variables.size(); i++) {
 
@@ -313,7 +215,7 @@ public class RunExpresion {
 
     }
 
-    public boolean isRepetidos(String sim, ArrayList<String> repetidos) {
+    private boolean isRepetidos(String sim, ArrayList<String> repetidos) {
         int i = 0;
 
         while (!repetidos.isEmpty()) {
@@ -325,7 +227,7 @@ public class RunExpresion {
         return false;
     }
 
-    public String extraerSimbolos(String expresion) {
+    private String extraerSimbolos(String expresion) {
         String fina = expresion;
         for (int i = 0; i < expresion.length(); i++) {
 
@@ -346,8 +248,7 @@ public class RunExpresion {
 
     }
 
-
-    public int cambiarEstado(int estado, ArrayList<regla> reglas) {
+    private int cambiarEstado(int estado, ArrayList<Regla> reglas) {
 
         char est = reglas.get(estado).getSalto().charAt(2);
         String es = String.valueOf(est);
@@ -367,7 +268,7 @@ public class RunExpresion {
         }
     }
 
-    public ArrayList<String> permutations(String str, int n) {
+    private ArrayList<String> permutations(String str, int n) {
         ArrayList<String> partial = new ArrayList<>();
         char[] s = str.toCharArray();
         Arrays.sort(s);
