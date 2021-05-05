@@ -123,11 +123,6 @@ public class View extends javax.swing.JFrame {
         jMenuBar.add(menuArchivo);
 
         menuAcerca.setText("Información");
-        menuAcerca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAcercaActionPerformed(evt);
-            }
-        });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/info.png"))); // NOI18N
@@ -197,42 +192,38 @@ public class View extends javax.swing.JFrame {
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
         Parser parser = new Parser();
+        String codigo = jTextArea_Codigo.getText();
+        String valor_expresion = jTextArea_Expression.getText();
+        try {
+
+            if (codigo == null || codigo == "" || valor_expresion == null || valor_expresion == "") {
+                throw new Exception("error");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         try {
-            parser.leerCodigo(jTextArea_Codigo.getText());
+
+            parser.leerCodigo(codigo);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        RunExpresion expresion = new RunExpresion(parser, "abc");
+        RunExpresion expresion = new RunExpresion(parser, valor_expresion);
 
-        System.out.printf("Resultado del parser:%n%s%n", parser);
+        System.out.printf("Expresion:%s%n", valor_expresion);
+        //System.out.printf("Resultado del parser:%n%s%n", parser);
+        expresion.calcularValoresPrueba();
 
-        String resultadoPrueba = mostrarResultado(expresion.obtenerResultadoValoresPrueba());
-        System.out.printf("Resultado del Run Expression:%n%s%n", resultadoPrueba);
-        jTextArea_Resultado.setText(resultadoPrueba);
+        System.out.printf("Resultado del Run Expression:%n%s%n", expresion);
+        jTextArea_Resultado.setText(expresion.toString());
 
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
-    private String mostrarResultado(ArrayList<String> resultado) {
-        StringBuilder s = new StringBuilder();
-
-        for (String string : resultado) {
-            s.append(String.format("%s%n", string));
-        }
-
-        return s.toString();
-    }
-
-    private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed
-
-    }//GEN-LAST:event_menuAcercaActionPerformed
-
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-        jTextArea_Codigo.setText("");
-        jTextArea_Expression.setText("");
-        jTextArea_Resultado.setText("");
+        limpiarCampos();
         AbrirArchivos.abrirArchivo(this, jTextArea_Codigo);
     }//GEN-LAST:event_abrirArchivoActionPerformed
 
@@ -254,9 +245,7 @@ public class View extends javax.swing.JFrame {
     private void jTextArea_CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea_CodigoMouseClicked
 
         if (!ejemplo) {
-            jTextArea_Codigo.setText("");
-            jTextArea_Expression.setText("");
-            jTextArea_Resultado.setText("");
+            limpiarCampos();
             ejemplo = true;
         }
 
@@ -264,13 +253,16 @@ public class View extends javax.swing.JFrame {
 
     private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
 
-        jTextArea_Codigo.setText("");
-        jTextArea_Expression.setText("");
-        jTextArea_Resultado.setText("");
+        limpiarCampos();
         ejemplo = false;
 
     }//GEN-LAST:event_jBtn_NuevoActionPerformed
 
+    private void limpiarCampos() {
+        jTextArea_Codigo.setText("");
+        jTextArea_Expression.setText("");
+        jTextArea_Resultado.setText("");
+    }
     /**
      * @param args the command line arguments
      */

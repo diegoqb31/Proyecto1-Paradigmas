@@ -26,6 +26,7 @@ public class RunExpresion {
     private ArrayList<String> markers;
     private ArrayList<Regla> reglas;
     private String expresion;
+    private ArrayList<String> resultado;
 
     public RunExpresion(Parser parser, String expresion) {
         this.simbolos = parser.getSymbols();
@@ -34,14 +35,15 @@ public class RunExpresion {
         this.reglas = new ArrayList<>();
         // this.reglas=parser.getReglas();
         this.expresion = expresion;
+        this.resultado = new ArrayList<>();
 
     }
 
-    public ArrayList<String> obtenerResultado() {
-        return leerExpresion();
+    public void calcular() {
+        leerExpresion();
     }
 
-    public ArrayList<String> obtenerResultadoValoresPrueba() {
+    public void calcularValoresPrueba() {
         ValoresPruebaParser parser = ValoresPruebaParser.getIntance();
 
         this.simbolos = parser.getSymbols();
@@ -50,7 +52,7 @@ public class RunExpresion {
         this.reglas = parser.getReglas();
         this.expresion = parser.getExpression();
 
-        return leerExpresion();
+        calcular();
     }
 
     private ArrayList<String> leerExpresion() {
@@ -71,18 +73,18 @@ public class RunExpresion {
          */
         int estado = 0;
         String aux = "";
-        ArrayList<String> resultado = new ArrayList();
-        resultado.add("Expresion-> " +expresion);
+
+        resultado.add("Expresion-> " + expresion);
         while (estado < reglas.size()) {
             aux = contiene(expresion, reglas.get(estado).getPrimeraRegla());
             if (!aux.equals("")) {
 
                 expresion = expresion.replaceFirst(aux, sRegla(aux, reglas.get(estado).getTrancision()));
-                resultado.add(reglas.get(estado).getIdenticador()+"-> "+ expresion);
+                resultado.add(reglas.get(estado).getIdenticador() + "-> " + expresion);
 
                 if (expresion.contains(".")) {
                     expresion = expresion.replace(".", "");
-                    resultado.add("Resultado-> " +expresion);
+                    resultado.add("Resultado-> " + expresion);
                     return resultado;
                 }
 
@@ -293,6 +295,17 @@ public class RunExpresion {
             reverse(s, i, n - 1);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+
+        for (String string : resultado) {
+            s.append(String.format("%s%n", string));
+        }
+
+        return s.toString();
     }
 
 }
