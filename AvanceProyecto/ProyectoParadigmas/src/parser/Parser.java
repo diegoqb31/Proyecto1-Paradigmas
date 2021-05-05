@@ -2,6 +2,7 @@ package parser;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -13,18 +14,18 @@ import java.util.HashSet;
  */
 public class Parser {
 
-    private final HashSet<Character> symbols, vars, markers;
-    private final HashSet<String> reglas;
+    private final ArrayList<String> symbols, vars, markers;
+    private final ArrayList<String> reglas;
     private boolean parseMarkers, parseSymbols, parseVars;
 
     /**
      * Constructor para la clase Parser
      */
     public Parser() {
-        this.symbols = new HashSet();
-        this.vars = new HashSet();
-        this.markers = new HashSet();
-        this.reglas = new HashSet();
+        this.symbols = new ArrayList<String>();
+        this.vars = new ArrayList<String>();
+        this.markers = new ArrayList<String>();
+        this.reglas = new ArrayList<String>();
 
         this.parseSymbols = false;
         this.parseVars = false;
@@ -57,7 +58,7 @@ public class Parser {
             for (char c : "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray()) {
                 this.checkVars(c, "SYMBOL");
                 this.checkMarkers(c, "SYMBOL");
-                this.symbols.add(c);
+                this.symbols.add(String.valueOf(c));
             }
         }
 
@@ -65,7 +66,7 @@ public class Parser {
             for (char c : "wxyz".toCharArray()) {
                 this.checkSymbols(c, "VAR");
                 this.checkMarkers(c, "VAR");
-                this.vars.add(c);
+                this.vars.add(String.valueOf(c));
 
             }
         }
@@ -74,7 +75,7 @@ public class Parser {
             for (char c : "αβγδ".toCharArray()) {
                 this.checkSymbols(c, "MARKER");
                 this.checkVars(c, "MARKER");
-                this.markers.add(c);
+                this.markers.add(String.valueOf(c));
             }
         }
     }
@@ -88,7 +89,7 @@ public class Parser {
      */
     private void agregarSymbols(String symbols) throws Exception {
         for (char symbol : symbols.toCharArray()) {
-            if (!this.symbols.add(symbol)) {
+            if (!this.symbols.add(String.valueOf(symbol))) {
                 throw new Exception("El SYMBOL \"" + symbol + "\" ya fue declarado anteriormente");
             }
 
@@ -105,7 +106,7 @@ public class Parser {
      */
     private void agregarVars(String vars) throws Exception {
         for (char var : vars.toCharArray()) {
-            if (!this.vars.add(var)) {
+            if (!this.vars.add(String.valueOf(var))) {
                 throw new Exception("La VAR \"" + var + "\" ya fue declarada anteriormente");
             }
             
@@ -122,7 +123,7 @@ public class Parser {
      */
     private void agregarMarkers(String markers) throws Exception {
         for (char marker : markers.toCharArray()) {
-            if (!this.markers.add(marker)) {
+            if (!this.markers.add(String.valueOf(marker))) {
                 throw new Exception("El MARKER \"" + marker + "\" ya fue declarado anteriormente");
             }
 
@@ -243,7 +244,7 @@ public class Parser {
      *
      * @return El HashSet de symbols
      */
-    public HashSet<Character> getSymbols() {
+    public  ArrayList<String> getSymbols() {
         return symbols;
     }
 
@@ -252,7 +253,7 @@ public class Parser {
      *
      * @return El HashSet de vars
      */
-    public HashSet<Character> getVars() {
+    public  ArrayList<String> getVars() {
         return vars;
     }
 
@@ -261,7 +262,7 @@ public class Parser {
      *
      * @return El HashSet de markers
      */
-    public HashSet<Character> getMarkers() {
+    public  ArrayList<String> getMarkers() {
         return markers;
     }
 
@@ -270,7 +271,7 @@ public class Parser {
      *
      * @return El HashSet de reglas
      */
-    public HashSet<String> getReglas() {
+    public  ArrayList<String> getReglas() {
         return reglas;
     }
 }

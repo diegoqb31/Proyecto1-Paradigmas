@@ -1,7 +1,7 @@
 package proyectoparadigmas;
 
 import archivos.AbrirArchivos;
-import static archivos.GuardarArchivo.guardarComo;
+import static archivos.guardarArchivo.guardarComo;
 import javax.swing.JOptionPane;
 import parser.Parser;
 
@@ -203,8 +203,12 @@ public class View extends javax.swing.JFrame {
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
+        RunExpresion expresion = new RunExpresion(parser);    
 
         System.out.printf("Resultado del parser:%n%s%n", parser);
+        System.out.printf("Resultado del parser:%n%s%n", expresion.datosQuemados());
+        
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
     private void menuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAcercaActionPerformed

@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
  */
-public class GuardarArchivo {
+public class guardarArchivo {
 
     /**
     * Guarda un archivo .txt con el contenido del TextArea

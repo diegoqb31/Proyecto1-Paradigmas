@@ -6,7 +6,7 @@ package parser;
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
  */
-public class Regla {
+public class regla {
 
     String identicador;
     String primeraRegla;
@@ -14,7 +14,7 @@ public class Regla {
     String salto;
     boolean fin;
 
-    public Regla(String identicador, String primeraRegla, String trancision, String salto) {
+    public regla(String identicador, String primeraRegla, String trancision, String salto) {
         this.identicador = identicador;
         this.primeraRegla = primeraRegla;
         this.trancision = trancision;
