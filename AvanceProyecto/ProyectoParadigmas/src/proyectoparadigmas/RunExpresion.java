@@ -34,9 +34,8 @@ public class RunExpresion {
     private ArrayList<String> markers = new ArrayList<>();
 
     private String expresionArchivo = "";
-    
-    Parser parser;
 
+    Parser parser;
 
     public void setExpresionArchivo(String expresionArchivo) {
         this.expresionArchivo = expresionArchivo;
@@ -62,7 +61,6 @@ public class RunExpresion {
         return expresionArchivo;
     }
 
-
     public void setVariables(ArrayList<String> variables) {
         this.variables = variables;
     }
@@ -74,6 +72,7 @@ public class RunExpresion {
     public void setSimbolos(ArrayList<String> simbolos) {
         this.simbolos = simbolos;
     }
+
     public void setMarkers(ArrayList<String> markers) {
         this.markers = markers;
     }
@@ -84,11 +83,8 @@ public class RunExpresion {
         this.parser = parser;
     }
 
-    public RunExpresion(Parser parser) {
-        this.parser = parser;
-        simbolos = parser.getSymbols();
-        markers = parser.getMarkers();
-        variables = parser.getVars();
+    public RunExpresion() {
+
     }
 
     /*
@@ -106,8 +102,6 @@ public class RunExpresion {
     3. x -> Fx
      */
     public ArrayList<String> datosQuemados() {
-        
-        
 
         ArrayList<regla> reglas = new ArrayList();
 
@@ -149,12 +143,12 @@ public class RunExpresion {
         reglas.add(r7);
         reglas.add(r8);
 
-        return leerExpresion(reglas, "abc");
+        return leerExpresion(reglas, "abcabcabcabcabcaaaaabbbbccccccbcbcbccacacaabababacacacaccacacacacacacacacacacacacababababacabbbacccabbbacabbacb");
 
     }
 
     public ArrayList<String> leerExpresion(ArrayList<regla> reglas, String expresion) {
-    /* p1. Fx -> xF
+        /* p1. Fx -> xF
        p2. xF -> x# (p4)
        p3. x -> Fx
        p4. Gx# -> #x (p4)
@@ -177,7 +171,7 @@ public class RunExpresion {
 
                 expresion = expresion.replaceFirst(aux, sRegla(aux, reglas.get(estado).getTrancision()));
                 resultado.add(expresion);
-                
+
                 if (expresion.contains(".")) {
                     expresion = expresion.replace(".", "");
                     resultado.add(expresion);
@@ -204,12 +198,31 @@ public class RunExpresion {
 
     }
 
+    public String removeDuplicate(char str[], int n) {
+        int index = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            int j;
+            for (j = 0; j < i; j++) {
+                if (str[i] == str[j]) {
+                    break;
+                }
+            }
+
+            if (j == i) {
+                str[index++] = str[i];
+            }
+        }
+        return String.valueOf(Arrays.copyOf(str, index));
+    }
+
     public String sRegla(String pR, String sR) {
         /* sR -> yGx --> aGb  zyGx <-- Gabc  a:x:0  b:y:1 c:z:2
            pR -> Gab --> bGa                   1      0    ...             */
 
-        String simUtilizados = extraerSimbolos(pR);
-        String varUtilizadas = extraerSimbolos(sR);
+        String simUtilizados = extraerSimbolos(pR, false);
+        String varUtilizadas = extraerSimbolos(sR, true);
         ArrayList<String> repetidos = new ArrayList();
         ArrayList<String> sim = new ArrayList();
         int contSim = 0;
@@ -267,11 +280,15 @@ public class RunExpresion {
         int contSim = 0;
         String pR = pRegla;
         ArrayList<String> repetidos = new ArrayList();
-        String simUtilizados = extraerSimbolos(expresion);
+        String simUtilizados = extraerSimbolos(expresion, true);
         ArrayList<String> permuta = permutations(simUtilizados, simUtilizados.length());
 
-        for (int j = 0; j < permuta.size(); j++) {
-            if (j == 0) {
+        if (!findMarker(expresion) && findMarker(pRegla)) {
+            return "";
+        }
+
+        for (int j = -1; j < permuta.size(); j++) {
+            if (j == -1) {
                 simUtilizados = permuta.get(permuta.indexOf(simUtilizados));
                 permuta.remove(permuta.indexOf(simUtilizados));
             } else {
@@ -280,6 +297,12 @@ public class RunExpresion {
             pRegla = pR;
             contSim = 0;
             repetidos.clear();
+            if (j == -1 && extraerSimbolos(pRegla, false).length() > 1) {
+                String aux2 = verificarValRepetidos(expresion, pRegla, simUtilizados);
+                if (!aux2.equals("")) {
+                    return aux2;
+                }
+            }
             for (int i = 0; i < pRegla.length(); i++) {
                 String aux = String.valueOf(pRegla.charAt(i));
                 if (isVar(aux, repetidos)) {
@@ -300,6 +323,19 @@ public class RunExpresion {
 
     }
 
+    public boolean findMarker(String expresion) {
+
+        for (int i = 0; i < markers.size(); i++) {
+
+            if (expresion.contains(markers.get(i))) {
+                return true;
+            }
+
+        }
+        return false;
+
+    }
+
     public boolean isVar(String sim, ArrayList<String> repetidos) {
 
         for (int i = 0; i < variables.size(); i++) {
@@ -310,6 +346,35 @@ public class RunExpresion {
 
         }
         return false;
+
+    }
+
+    public String verificarValRepetidos(String expresion, String pRegla, String simUtilizados) {
+
+        int contSim = 0;
+        String pR = pRegla;
+        int cantSimbolos = extraerSimbolos(pRegla, true).length();
+        for (int i = 0; i < cantSimbolos; i++) {
+            String aux = String.valueOf(extraerSimbolos(pRegla, true).charAt(i));
+
+            pRegla = pRegla.replaceAll(aux, String.valueOf(simUtilizados.charAt(contSim)));
+
+            if (i + 1 == cantSimbolos && contSim < simUtilizados.length()) {
+                contSim++;
+                i = -1;
+
+                if (expresion.contains(pRegla)) {
+                    return pRegla;
+                }
+                if (contSim == simUtilizados.length()) {
+                    return "";
+                }
+                pRegla = pR;
+            }
+
+        }
+
+        return "";
 
     }
 
@@ -325,7 +390,7 @@ public class RunExpresion {
         return false;
     }
 
-    public String extraerSimbolos(String expresion) {
+    public String extraerSimbolos(String expresion, boolean bandera) {
         String fina = expresion;
         for (int i = 0; i < expresion.length(); i++) {
 
@@ -342,10 +407,12 @@ public class RunExpresion {
             }
 
         }
+        if (bandera) {
+            fina = removeDuplicate(fina.toCharArray(), fina.length());
+        }
         return fina;
 
     }
-
 
     public int cambiarEstado(int estado, ArrayList<regla> reglas) {
 
