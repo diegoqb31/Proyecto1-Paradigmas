@@ -277,7 +277,7 @@ public class Parser {
             boolean valido = false;
             
             for (char s : regla.getPrimeraRegla().toCharArray()) {
-                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s))) {
+                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s)) || s == '^') {
                     valido = true;
                     break;
                 }
@@ -290,7 +290,7 @@ public class Parser {
             valido = false;
             
             for (char s : regla.getTrancision().toCharArray()) {
-                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s))) {
+                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s)) || s == '^') {
                     valido = true;
                     break;
                 }
