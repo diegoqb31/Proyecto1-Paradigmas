@@ -16,5 +16,13 @@ public class ProyectoParadigmas {
                 new View().setVisible(true);
             }
         });
+        
+     //   RunExpresion hola = new RunExpresion();
+       // hola.calcularValoresPrueba();
+        
+        
     }
+    
+    
+  
 }

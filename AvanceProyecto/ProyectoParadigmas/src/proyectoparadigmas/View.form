@@ -92,11 +92,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="label_Expression" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane_Codigo" min="-2" pref="471" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="label_Expression" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane_Expression" alignment="0" min="-2" pref="471" max="-2" attributes="0"/>
+                  <Component id="jScrollPane_Codigo" alignment="0" min="-2" pref="471" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -107,7 +105,10 @@
                           <Component id="jBtn_Run" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jBtn_Debug" min="-2" pref="113" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jBtn_Debug" pref="113" max="32767" attributes="0"/>
+                          <Component id="Next" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="jBtn_Stop" min="-2" pref="99" max="-2" attributes="0"/>
                   </Group>
@@ -119,19 +120,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jScrollPane_Resultado" min="-2" pref="302" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jScrollPane_Codigo" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="label_Expression" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane_Codigo" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jScrollPane_Resultado" alignment="1" pref="302" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <Component id="label_Expression" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane_Expression" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="jBtn_Stop" min="-2" pref="35" max="-2" attributes="0"/>
@@ -141,7 +137,10 @@
                           <Component id="jBtn_Debug" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jBtn_Nuevo" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jBtn_Nuevo" max="32767" attributes="0"/>
+                          <Component id="Next" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -161,7 +160,6 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="% Ingrese los simbolos, variables, marcadores y reglas&#xa;&#xa;%Ejemplo&#xa;% Invierte una hilera.&#xa;&#xa;%Rules&#xa;p1. Fx -&gt; xF&#xa;p2. xF -&gt; x# (p4)&#xa;p3. x -&gt; Fx&#xa;p4. Gx# -&gt; #x (p4)&#xa;p5. #G -&gt; ^.&#xa;p6. Gxy -&gt; yGx (p4)&#xa;p7. x -&gt; Gx (p4)&#xa;p8. # -&gt; ^."/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextArea_CodigoMouseClicked"/>
@@ -180,7 +178,6 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="abc"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -202,7 +199,6 @@
             <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="abc&#xa;Fabc&#xa;aFbc&#xa;abFc&#xa;abcF&#xa;abc#&#xa;Gabc#&#xa;bGac#   &#xa;bcGa#   &#xa;bc#a&#xa;Gbc#a  &#xa;cGb#a  &#xa;c#ba  &#xa;Gc#ba  &#xa;#cba&#xa;cba"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -215,6 +211,8 @@
         <Property name="text" type="java.lang.String" value="Run"/>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jBtn_RunMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jBtn_RunMouseEntered"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_RunActionPerformed"/>
       </Events>
     </Component>
@@ -243,6 +241,15 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_NuevoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="Next">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Next"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="NextMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NextActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
