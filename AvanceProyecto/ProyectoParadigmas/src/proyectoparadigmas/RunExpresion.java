@@ -36,14 +36,33 @@ public class RunExpresion implements Runnable {
     public RunExpresion(Parser parser, String expresion) {
         this.simbolos = parser.getSymbols();
         this.variables = parser.getVars();
-        this.markers = parser.getMarkers();
-        this.Reglas = new ArrayList<>();
-        // this.Reglas=parser.getReglas();
+        this.markers = parser.getMarkers();;
+        this.Reglas = parser.getReglas();
         this.expresion = expresion;
         this.resultado = new ArrayList<>();
         this.exit = false;
+        this.debug = true;
+        this.t = new Thread(this, "run");
+        this.t.start();
 
     }
+    
+    /*
+    #symbols abcdefghijklmnopqrstuvwxyz0123456789
+#vars wxyz
+#markers GF#^
+
+% Invierte una hilera.
+
+p1: Fx -> xF
+p2: xF -> x# (p4)
+p3: x -> Fx
+p4: Gx# -> #x (p4)
+p5: #G -> ^.
+p6: Gxy -> yGx (p4)
+p7: x -> Gx (p4)
+p8: # -> ^.
+    */
 
     private String expresionPrincipal;
 
@@ -66,10 +85,6 @@ public class RunExpresion implements Runnable {
     public ArrayList<String> getMarkers() {
         return markers;
 
-    }
-
-    public void calcular() {
-        leerExpresion();
     }
 
     public String getExpresionArchivo() {
@@ -96,7 +111,7 @@ public class RunExpresion implements Runnable {
         this.debug = true;
         this.resultado = new ArrayList<>();
         this.t = new Thread(this, "run");
-        this.t.start();;
+        this.t.start();
         //calcular();
     }
 

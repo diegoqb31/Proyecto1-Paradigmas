@@ -313,9 +313,9 @@ public class View extends javax.swing.JFrame {
         RunExpresion expresion = new RunExpresion(parser, valor_expresion);
         this.setRunExp(expresion);
 
-        System.out.printf("Expresion:%s%n", valor_expresion);
+      //  System.out.printf("Expresion:%s%n", valor_expresion);
         //System.out.printf("Resultado del parser:%n%s%n", parser);
-        this.getRunExp().calcularValoresPrueba();
+       // this.getRunExp().calcularValoresPrueba();
 
         System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
         jTextArea_Resultado.setText(this.getRunExp().toString());
