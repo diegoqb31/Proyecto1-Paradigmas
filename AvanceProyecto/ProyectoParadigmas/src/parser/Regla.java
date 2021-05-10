@@ -18,6 +18,8 @@ public class Regla {
         this.salto = "";
         this.fin = false;
     }
+    
+    
 
     public Regla(String identicador, String primeraRegla, String trancision, String salto) {
         this.identicador = identicador;

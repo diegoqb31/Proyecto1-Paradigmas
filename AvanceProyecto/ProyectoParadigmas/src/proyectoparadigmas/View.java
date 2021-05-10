@@ -7,7 +7,10 @@ import static java.awt.Color.blue;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -22,6 +25,7 @@ import parser.Parser;
 public class View extends javax.swing.JFrame {
 
     private RunExpresion RunExp;
+    private boolean debug;
 
     public RunExpresion getRunExp() {
         return RunExp;
@@ -109,6 +113,11 @@ public class View extends javax.swing.JFrame {
 
         jBtn_Debug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bug.png"))); // NOI18N
         jBtn_Debug.setText("Debug");
+        jBtn_Debug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_DebugActionPerformed(evt);
+            }
+        });
 
         jBtn_Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/stop.png"))); // NOI18N
         jBtn_Stop.setText("Stop");
@@ -284,6 +293,7 @@ public class View extends javax.swing.JFrame {
         Parser parser = new Parser();
         String codigo = jTextArea_Codigo.getText();
         String valor_expresion = jTextArea_Expression.getText();
+        this.debug = false;
 
         Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
 
@@ -310,17 +320,62 @@ public class View extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        RunExpresion expresion = new RunExpresion(parser, valor_expresion);
+        RunExpresion expresion = new RunExpresion(parser, valor_expresion, this, debug);
         this.setRunExp(expresion);
 
-      //  System.out.printf("Expresion:%s%n", valor_expresion);
+        //  System.out.printf("Expresion:%s%n", valor_expresion);
         //System.out.printf("Resultado del parser:%n%s%n", parser);
-       // this.getRunExp().calcularValoresPrueba();
-
-        System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
-        jTextArea_Resultado.setText(this.getRunExp().toString());
+        // this.getRunExp().calcularValoresPrueba();
+        //System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
+        jTextArea_Resultado.setText(this.getRunExp().getResultado().toString());
 
     }//GEN-LAST:event_jBtn_RunMouseClicked
+
+    private void jBtn_DebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_DebugActionPerformed
+        Parser parser = new Parser();
+        String codigo = jTextArea_Codigo.getText();
+        String valor_expresion = jTextArea_Expression.getText();
+        this.debug = true;
+
+        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
+
+        try {
+            jTextArea_Codigo.getHighlighter().addHighlight(3, 3, cyanPainter);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+
+            if (codigo == null || codigo == "" || valor_expresion == null || valor_expresion == "") {
+                throw new Exception("error");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            if (!this.getjTextArea_Codigo().getText().equals("") && !this.jTextArea_Expression.getText().equals("")) {
+            parser.leerCodigo(codigo);
+            RunExpresion expresion = new RunExpresion(parser, valor_expresion, this, debug);
+            this.setRunExp(expresion);
+        } else {
+            JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");
+        }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jBtn_DebugActionPerformed
+
+    public JTextArea getjTextArea_Codigo() {
+        return jTextArea_Codigo;
+    }
+
+    public JTextArea getjTextArea_Resultado() {
+        return jTextArea_Resultado;
+    }
 
     private void limpiarCampos() {
         jTextArea_Codigo.setText("");

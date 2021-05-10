@@ -9,6 +9,7 @@ package proyectoparadigmas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import parser.Regla;
 import parser.Parser;
 import parser.ValoresPruebaParser;
@@ -32,8 +33,9 @@ public class RunExpresion implements Runnable {
     Thread t;
     private int estado = 0;
     private boolean end = false;
+    View view;
 
-    public RunExpresion(Parser parser, String expresion) {
+    public RunExpresion(Parser parser, String expresion, View view, boolean debug) {
         this.simbolos = parser.getSymbols();
         this.variables = parser.getVars();
         this.markers = parser.getMarkers();;
@@ -41,14 +43,15 @@ public class RunExpresion implements Runnable {
         this.expresion = expresion;
         this.resultado = new ArrayList<>();
         this.exit = false;
-        this.debug = true;
+        this.debug = debug;
         this.t = new Thread(this, "run");
+        this.view = view;
         this.t.start();
 
     }
-    
+
     /*
-    #symbols abcdefghijklmnopqrstuvwxyz0123456789
+#symbols abcdefghijklmnopqrstuvwxyz0123456789
 #vars wxyz
 #markers GF#^
 
@@ -62,8 +65,9 @@ p5: #G -> ^.
 p6: Gxy -> yGx (p4)
 p7: x -> Gx (p4)
 p8: # -> ^.
-    */
+    
 
+     */
     private String expresionPrincipal;
 
     private String expresionArchivo = "";
@@ -250,7 +254,7 @@ p8: # -> ^.
         if (!simUtilizados.equals("")) {
             for (int i = 0; i < simUtilizados.length(); i++) {
                 sim.add(String.valueOf(simUtilizados.charAt(i)));
-                sim.add(variables.get(i));
+                sim.add(String.valueOf(varUtilizadas.charAt(i)));
             }
 
             if (varUtilizadas.length() > 1) {
@@ -437,7 +441,7 @@ p8: # -> ^.
 
     private int cambiarEstado(int estado, ArrayList<Regla> Reglas) {
 
-        char est = Reglas.get(estado).getSalto().charAt(2);
+        char est = Reglas.get(estado).getSalto().charAt(1);
         String es = String.valueOf(est);
         return Integer.parseInt(es);
 
@@ -486,9 +490,9 @@ p8: # -> ^.
     public String toString() {
         StringBuilder s = new StringBuilder();
 
-        for (String string : resultado) {
-            s.append(String.format("%s%n", string));
-        }
+        resultado.forEach((String string) -> {
+            s.append(string).append("\n");
+        });
 
         return s.toString();
     }
@@ -498,7 +502,7 @@ p8: # -> ^.
         if (!end) {
             exit = false;
             this.run();
-        } 
+        }
     }
 
     @Override
@@ -509,7 +513,7 @@ p8: # -> ^.
 
             // int estado = 0;
             String aux = "";
-            resultado.add("Expresion-> " + expresion);
+            
             while (estado < Reglas.size()) {
                 aux = contiene(expresion, Reglas.get(estado).getPrimeraRegla());
                 if (!aux.equals("")) {
@@ -522,8 +526,7 @@ p8: # -> ^.
 
                     System.out.print(expresion);
 
-                    if (expresion.contains(".")) {
-                        expresion = expresion.replace(".", "");
+                    if (Reglas.get(estado).isFin()) {
                         resultado.add("Resultado-> " + expresion);
                         end = true;
                         this.stop(true);
@@ -533,7 +536,8 @@ p8: # -> ^.
                     if (!Reglas.get(estado).getSalto().equals("")) {
                         estado = cambiarEstado(estado, Reglas) - 1;
 
-                        if (this.stop(true)) {
+                        if (this.stop(debug)) {
+                            this.view.getjTextArea_Resultado().setText(this.toString());
                             break;
                         }
                         continue;
@@ -541,7 +545,8 @@ p8: # -> ^.
 
                     estado = 0;
 
-                    if (this.stop(true)) {
+                    if (this.stop(debug)) {
+                        this.view.getjTextArea_Resultado().setText(this.toString());
                         break;
                     }
                     continue;
@@ -552,6 +557,10 @@ p8: # -> ^.
                 if (estado == Reglas.size()) {
                     estado = 0;
 
+                }
+
+                if (this.stop(debug)) {
+                    break;
                 }
 
             }
