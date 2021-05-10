@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * @author Carlos Chacon Vargas
@@ -15,21 +14,26 @@ import java.util.HashSet;
 public class Parser {
 
     private final ArrayList<String> symbols, vars, markers;
-    private final ArrayList<String> reglas;
+    private final ArrayList<Regla> reglas;
+    private final ArrayList<String> reglasString;
     private boolean parseMarkers, parseSymbols, parseVars;
+    private int cantidadReglas;
 
     /**
      * Constructor para la clase Parser
      */
     public Parser() {
-        this.symbols = new ArrayList<String>();
-        this.vars = new ArrayList<String>();
-        this.markers = new ArrayList<String>();
-        this.reglas = new ArrayList<String>();
+        this.symbols = new ArrayList<>();
+        this.vars = new ArrayList<>();
+        this.markers = new ArrayList<>();
+        this.reglas = new ArrayList<>();
+        this.reglasString = new ArrayList<>();
 
         this.parseSymbols = false;
         this.parseVars = false;
         this.parseMarkers = false;
+        
+        this.cantidadReglas = 0;
     }
 
     /**
@@ -42,8 +46,8 @@ public class Parser {
         StringBuilder s = new StringBuilder();
         s.append(String.format(" Symbols: %s%n Vars: %s%n Markers: %s%n Reglas:%n", symbols, vars, markers));
 
-        for (String regla : reglas) {
-            s.append(String.format("%s%n", regla));
+        for (Regla regla : this.reglas) {
+            s.append(regla.toString());
         }
 
         return s.toString();
@@ -56,7 +60,6 @@ public class Parser {
     private void setValoresDefecto() throws Exception {
         if (!parseSymbols) {
             for (char c : "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray()) {
-                this.checkVars(c, "SYMBOL");
                 this.checkMarkers(c, "SYMBOL");
                 this.symbols.add(String.valueOf(c));
             }
@@ -64,7 +67,6 @@ public class Parser {
 
         if (!parseVars) {
             for (char c : "wxyz".toCharArray()) {
-                this.checkSymbols(c, "VAR");
                 this.checkMarkers(c, "VAR");
                 this.vars.add(String.valueOf(c));
 
@@ -98,7 +100,7 @@ public class Parser {
     }
 
     /**
-     * Agrega las vars al HashSet de vars
+     * Agrega las vars al ArrayList de vars
      *
      * @param vars El String con todos las vars
      * @throws Exception Tira una excepción en caso de que la var haya sido
@@ -115,7 +117,7 @@ public class Parser {
     }
 
     /**
-     * Agrega los markers al HashSet de markers
+     * Agrega los markers al ArrayList de markers
      *
      * @param markers El String con todos los markers
      * @throws Exception Tira una excepción en caso de que el marker haya sido
@@ -133,34 +135,87 @@ public class Parser {
     }
 
     /**
-     * Agrega los symbols al HashSet de reglas
+     * Agrega la regla al ArrayList de reglas
      *
-     * @param reglas El String con todas los reglas
+     * @param linea La linea que contiene la regla
      * @throws Exception Tira una excepción en caso de que la regla haya sido
-     * declarado anteriormente
+     * declarado anteriormente o haya errores de parsing en la regla
      */
-    private void agregarReglas(String reglas) throws Exception {
-        for (String regla : Arrays.asList(reglas)) {
-            if (!this.reglas.add(regla)) {
-                throw new Exception("La regla \"" + markers + "\" ya fue declarada anteriormente");
+    private void procesarRegla(String linea) throws Exception {
+        if (!this.reglasString.add(linea)) {
+            throw new Exception("La regla \"" + markers + "\" ya fue declarada anteriormente");
+        }
+        
+        if (!linea.contains("->") || (linea.contains(".") && linea.contains("("))) {
+            throw new Exception("Error de parsing en reglas");
+        }
+        
+        linea = linea.replaceAll("\\s+","");
+        
+        Regla regla = new Regla();
+        String etiqueta = "P" + this.cantidadReglas++;
+        
+        try {
+            if (linea.contains(":")) {
+                etiqueta = linea.substring(0, linea.indexOf(":"));
+                linea = linea.replace(etiqueta + ":", "");
+            }
+            
+            String patron = linea.substring(0, linea.indexOf("->"));
+            String sustitucion = linea.substring(linea.indexOf("->") + 2);
+            String salto = "";
+            
+            if (sustitucion.contains(".")) {
+                regla.setFin(true);
+                sustitucion = sustitucion.replace(".", "");
+                
+            } else if (sustitucion.contains("(")) {
+                salto = sustitucion.substring(sustitucion.indexOf("(") + 1, sustitucion.indexOf(")"));
+            }
+            
+            sustitucion = sustitucion.replace("(" + salto + ")", "");
+                        
+            regla.setIdenticador(etiqueta);
+            regla.setPrimeraRegla(patron);
+            regla.setTrancision(sustitucion);
+            regla.setSalto(salto);
+            
+            this.agregarRegla(regla);
+            
+        } catch (Exception e) {
+            throw new Exception("Error de parsing en reglas");
+        }
+    }
+    
+    private void agregarRegla(Regla regla) throws Exception {
+        if (this.reglas.isEmpty()) {
+            this.reglas.add(regla);
+            return;
+        }
+        
+        for (Regla r : this.reglas) {
+            if (r.getIdenticador().equals(regla.getIdenticador())) {
+                throw new Exception("La regla fue declarada anteriormente");
             }
         }
+        
+        this.reglas.add(regla);
     }
 
     private void checkSymbols(char caracter, String tipo) throws Exception {
-        if (this.symbols.contains(caracter)) {
+        if (this.symbols.contains(String.valueOf(caracter))) {
             throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de SYMBOLS");
         }
     }
 
     private void checkVars(char caracter, String tipo) throws Exception {
-        if (this.vars.contains(caracter)) {
+        if (this.vars.contains(String.valueOf(caracter))) {
             throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de VARS");
         }
     }
 
     private void checkMarkers(char caracter, String tipo) throws Exception {
-        if (this.markers.contains(caracter)) {
+        if (this.markers.contains(String.valueOf(caracter))) {
             throw new Exception("El " + tipo + " \"" + caracter + "\" ya está siendo utilizado en la declaración de MARKERS");
         }
     }
@@ -213,7 +268,53 @@ public class Parser {
             }
 
         } else {
-            this.agregarReglas(linea);
+            this.procesarRegla(linea);
+        }
+    }
+    
+    private void validarReglas() throws Exception {
+        for (Regla regla : this.reglas) {
+            boolean valido = false;
+            
+            for (char s : regla.getPrimeraRegla().toCharArray()) {
+                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s))) {
+                    valido = true;
+                    break;
+                }
+            }
+            
+            if (!valido) {
+                throw new Exception("La regla no utiliza los SYMBOLS, MARKERS o VARS decladaros anteriormente");
+            }
+            
+            valido = false;
+            
+            for (char s : regla.getTrancision().toCharArray()) {
+                if (this.symbols.contains(String.valueOf(s)) || this.markers.contains(String.valueOf(s)) || this.vars.contains(String.valueOf(s))) {
+                    valido = true;
+                    break;
+                }
+            }
+            
+            if (!valido) {
+                throw new Exception("La regla no utiliza los SYMBOLS, MARKERS o VARS decladaros anteriormente");
+            }
+            
+            valido = false;
+            
+            if (!regla.getSalto().equals("")) {
+                for (Regla r : this.reglas) {
+                    if (regla.getSalto().equals(r.getIdenticador())) {
+                        valido = true;
+                        break;
+                    }
+                }
+                
+                if (!valido) {
+                    throw new Exception("La etiqueta de salto de una regla no existe como regla");
+                }
+            }
+            
         }
     }
 
@@ -237,6 +338,8 @@ public class Parser {
         }
 
         this.setValoresDefecto();
+        
+        this.validarReglas();
     }
 
     /**
@@ -271,7 +374,7 @@ public class Parser {
      *
      * @return El HashSet de reglas
      */
-    public  ArrayList<String> getReglas() {
+    public  ArrayList<Regla> getReglas() {
         return reglas;
     }
 }

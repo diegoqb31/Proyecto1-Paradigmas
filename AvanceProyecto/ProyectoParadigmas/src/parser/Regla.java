@@ -8,17 +8,23 @@ package parser;
  */
 public class Regla {
 
-    String identicador;
-    String primeraRegla;
-    String trancision;
-    String salto;
-    boolean fin;
+    private String identicador, primeraRegla, trancision, salto;
+    private boolean fin;
+    
+    public Regla() {
+        this.identicador = "";
+        this.primeraRegla = "";
+        this.trancision = "";
+        this.salto = "";
+        this.fin = false;
+    }
 
     public Regla(String identicador, String primeraRegla, String trancision, String salto) {
         this.identicador = identicador;
         this.primeraRegla = primeraRegla;
         this.trancision = trancision;
         this.salto = salto;
+        this.fin = false;
     }
 
     public void setIdenticador(String identicador) {
@@ -59,5 +65,13 @@ public class Regla {
 
     public String getSalto() {
         return salto;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(String.format(" %s: %s -> %s %s", this.identicador, this.primeraRegla, this.trancision, this.salto));
+        
+        return s.toString();
     }
 }
