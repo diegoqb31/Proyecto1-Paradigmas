@@ -46,7 +46,7 @@ public class RunExpresion implements Runnable {
         this.t.start();
 
     }
-    
+
     /*
     #symbols abcdefghijklmnopqrstuvwxyz0123456789
 #vars wxyz
@@ -62,8 +62,7 @@ p5: #G -> ^.
 p6: Gxy -> yGx (p4)
 p7: x -> Gx (p4)
 p8: # -> ^.
-    */
-
+     */
     private String expresionPrincipal;
 
     private String expresionArchivo = "";
@@ -498,7 +497,7 @@ p8: # -> ^.
         if (!end) {
             exit = false;
             this.run();
-        } 
+        }
     }
 
     @Override
@@ -565,5 +564,12 @@ p8: # -> ^.
         }
         return false;
     }
+    
+    public void stop(){
+       exit = true;
+    }
 
+     public void continuar(){
+       exit = false;
+    }
 }
