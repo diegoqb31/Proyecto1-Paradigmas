@@ -429,12 +429,11 @@ p8: # -> ^.
                 if (!Reglas.get(estado).getTrancision().equals("^")) {
                     expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision(),Reglas.get(estado).getPrimeraRegla()));
                 }
+                else{
+                    expresion = expresion.replaceFirst(aux, "");
+                }
 
-                resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);
-
-                //System.out.print(expresion);
-
-                
+                resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);        
 
                 if (Reglas.get(estado).isFin()) {
                     resultado.add("Resultado-> " + expresion);
