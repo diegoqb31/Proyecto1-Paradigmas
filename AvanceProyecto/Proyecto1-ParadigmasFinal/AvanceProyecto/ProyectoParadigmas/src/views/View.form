@@ -155,9 +155,6 @@
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextArea_CodigoMouseClicked"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -214,6 +211,7 @@
           <Image iconType="3" name="/imagenes/bug.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Debug"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_DebugActionPerformed"/>
@@ -225,6 +223,7 @@
           <Image iconType="3" name="/imagenes/stop.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Stop"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jBtn_Nuevo">

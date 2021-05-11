@@ -1,6 +1,5 @@
 package logic;
 
-import logic.Debugger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import main.ValoresPruebaParser;
@@ -10,6 +9,23 @@ import main.ValoresPruebaParser;
  * @author Bryan Sanchez Brenes
  * @author Diego Quiros Brenes
  * @author Alessandro Fazio Perez
+ */
+
+/* ejemplos de prueba
+#symbols abcdefghijklmnopqrstuvwxyz0123456789
+#vars wxyz
+#markers GF#^
+    
+% Invierte una hilera.
+
+p1: Fx -> xF
+p2: xF -> x# (p4)
+p3: x -> Fx
+p4: Gx# -> #x (p4)
+p5: #G -> ^.
+p6: Gxy -> yGx (p4)
+p7: x -> Gx (p4)
+p8: # -> ^.
  */
 public class RunExpresion implements Runnable {
 
@@ -25,7 +41,9 @@ public class RunExpresion implements Runnable {
     Thread t;
     private int estado = 0;
     private boolean end = false;
-   
+    private String expresionPrincipal;
+    private String expresionArchivo = "";
+    Parser parser;
 
     public RunExpresion(Parser parser, String expresion, boolean debug) {
         this.simbolos = parser.getSymbols();
@@ -38,33 +56,11 @@ public class RunExpresion implements Runnable {
         this.debug = debug;
         this.listaDebugger = new ArrayList<>();
         this.t = new Thread(this, "run");
-        this.t.start();
-
     }
 
-    /*
-#symbols abcdefghijklmnopqrstuvwxyz0123456789
-#vars wxyz
-#markers GF#^
-    
-% Invierte una hilera.
-
-p1: Fx -> xF
-p2: xF -> x# (p4)
-p3: x -> Fx
-p4: Gx# -> #x (p4)
-p5: #G -> ^.
-p6: Gxy -> yGx (p4)
-p7: x -> Gx (p4)
-p8: # -> ^.
-    
-
-     */
-    private String expresionPrincipal;
-
-    private String expresionArchivo = "";
-
-    Parser parser;
+    public void start() {
+        this.t.start();
+    }
 
     public void setListaDebugger(ArrayList<Debugger> listaDebugger) {
         this.listaDebugger = listaDebugger;
@@ -119,7 +115,6 @@ p8: # -> ^.
         this.debug = true;
         this.resultado = new ArrayList<>();
         this.t = new Thread(this, "run");
-        this.t.start();
 
     }
 
@@ -129,52 +124,6 @@ p8: # -> ^.
 
     public void setMarkers(ArrayList<String> markers) {
         this.markers = markers;
-    }
-
-    public RunExpresion() {
-
-    }
-
-    private ArrayList<String> leerExpresion() {
-
-        int estado = 0;
-        String aux = "";
-
-        resultado.add("Expresion-> " + expresion);
-        while (estado < Reglas.size()) {
-            aux = contiene(expresion, Reglas.get(estado).getPrimeraRegla());
-            if (!aux.equals("")) {
-
-                if (!Reglas.get(estado).getTrancision().equals("^")) {
-                    expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision()));
-                }
-
-                resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);
-
-                if (expresion.contains(".")) {
-                    expresion = expresion.replace(".", "");
-                    resultado.add("Resultado-> " + expresion);
-                    return resultado;
-                }
-
-                if (!Reglas.get(estado).getSalto().equals("")) {
-                    estado = cambiarEstado(estado, Reglas) - 1;
-                    continue;
-                }
-                estado = 0;
-                continue;
-            }
-
-            estado++;
-
-            if (estado == Reglas.size()) {
-                estado = 0;
-            }
-
-        }
-
-        return resultado;
-
     }
 
     public String removeDuplicate(char str[], int n) {
@@ -443,17 +392,6 @@ p8: # -> ^.
 
     }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-
-        resultado.forEach((String string) -> {
-            s.append(string).append("\n");
-        });
-
-        return s.toString();
-    }
-
     public void resume() {
 
         if (!end) {
@@ -462,78 +400,77 @@ p8: # -> ^.
         }
     }
 
-    
-    public void agregarDatosDebugger(String id, String regla1, String regla2, String expresion){
-        Debugger debugger = new Debugger(id,regla1,regla2,expresion);
-                    listaDebugger.add(debugger);
+    private void agregarDatosDebugger(String id, String regla1, String regla2, String expresion) {
+        Debugger debugger = new Debugger(id, regla1, regla2, expresion);
+        listaDebugger.add(debugger);
     }
-    @Override
-    public void run() {
-        int i = 0;
 
-        while (!exit) {
+    private void calcularExpresion() {
+        String aux = "";
 
-            // int estado = 0;
-            String aux = "";
+        while (estado < Reglas.size()) {
 
-            while (estado < Reglas.size()) {
+            aux = contiene(expresion, Reglas.get(estado).getPrimeraRegla());
+            if (!aux.equals("")) {
 
-                aux = contiene(expresion, Reglas.get(estado).getPrimeraRegla());
-                if (!aux.equals("")) {
+                if (!Reglas.get(estado).getTrancision().equals("^")) {
+                    expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision()));
+                }
 
-                    if (!Reglas.get(estado).getTrancision().equals("^")) {
-                        expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision()));
-                    }
+                resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);
 
-                    resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);
+                //System.out.print(expresion);
 
-                    System.out.print(expresion);
+                agregarDatosDebugger(Reglas.get(estado).getIdenticador(), aux, Reglas.get(estado).getTrancision(), expresion);
 
-                
-                    agregarDatosDebugger(Reglas.get(estado).getIdenticador(), aux, Reglas.get(estado).getTrancision(), expresion);
-                    
-                    if (Reglas.get(estado).isFin()) {
-                        resultado.add("Resultado-> " + expresion);
+                if (Reglas.get(estado).isFin()) {
+                    resultado.add("Resultado-> " + expresion);
 
-                        end = true;
-                        
-                        this.stop(true);
-                        break;
-                    }
+                    end = true;
 
-                   
+                    this.stop(true);
+                    break;
+                }
 
-                    if (!Reglas.get(estado).getSalto().equals("")) {
-                        estado = cambiarEstado(estado, Reglas) - 1;
-
-                        if (this.stop(debug)) {
-                            
-                            break;
-                        }
-                        continue;
-                    }
-
-                    estado = 0;
+                if (!Reglas.get(estado).getSalto().equals("")) {
+                    estado = cambiarEstado(estado, Reglas) - 1;
 
                     if (this.stop(debug)) {
-                        
+
                         break;
                     }
                     continue;
                 }
 
-                estado++;
-
-                if (estado == Reglas.size()) {
-                    estado = 0;
-
-                }
+                estado = 0;
 
                 if (this.stop(debug)) {
+
                     break;
                 }
+                continue;
+            }
+
+            estado++;
+
+            if (estado == Reglas.size()) {
+                estado = 0;
 
             }
+
+            if (this.stop(debug)) {
+                break;
+            }
+
+        }
+    }
+
+    @Override
+    public void run() {
+
+        while (!exit) {
+            calcularExpresion();
+
         }
     }
 
@@ -543,6 +480,17 @@ p8: # -> ^.
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+
+        resultado.forEach((String string) -> {
+            s.append(string).append("\n");
+        });
+
+        return s.toString();
     }
 
 }

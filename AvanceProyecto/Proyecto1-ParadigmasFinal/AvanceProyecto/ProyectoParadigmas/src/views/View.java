@@ -18,7 +18,7 @@ public class View extends javax.swing.JFrame {
 
     private RunExpresion RunExp;
     private boolean debug = false;
-    Parser parser = new Parser();
+ 
 
     public RunExpresion getRunExp() {
         return RunExp;
@@ -69,11 +69,6 @@ public class View extends javax.swing.JFrame {
 
         jTextArea_Codigo.setColumns(20);
         jTextArea_Codigo.setRows(5);
-        jTextArea_Codigo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextArea_CodigoMouseClicked(evt);
-            }
-        });
         jScrollPane_Codigo.setViewportView(jTextArea_Codigo);
 
         jTextArea_Expression.setColumns(20);
@@ -97,6 +92,7 @@ public class View extends javax.swing.JFrame {
 
         jBtn_Debug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bug.png"))); // NOI18N
         jBtn_Debug.setText("Debug");
+        jBtn_Debug.setEnabled(false);
         jBtn_Debug.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtn_DebugActionPerformed(evt);
@@ -105,6 +101,7 @@ public class View extends javax.swing.JFrame {
 
         jBtn_Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/stop.png"))); // NOI18N
         jBtn_Stop.setText("Stop");
+        jBtn_Stop.setEnabled(false);
 
         jBtn_Nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compiler.png"))); // NOI18N
         jBtn_Nuevo.setText("Nuevo");
@@ -203,19 +200,24 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
-
-        String codigo = jTextArea_Codigo.getText();
+        jBtn_Debug.setEnabled(true);
+         jBtn_Stop.setEnabled(true);
+       
+         
+         String codigo = jTextArea_Codigo.getText();
         String valor_expresion = jTextArea_Expression.getText();
         isDebugger();
         boolean vacio = !this.getjTextArea_Codigo().getText().equals("") && !this.jTextArea_Expression.getText().equals("");
 
         try {
             if (vacio) {
+                Parser parser = new Parser();
                 parser.leerCodigo(codigo);
                 RunExpresion expresion = new RunExpresion(parser, valor_expresion, debug);
                 this.setRunExp(expresion);
-                
-                this.jTextArea_Resultado.setText(expresion.toString());
+                RunExp.start();
+                System.out.println("Resultado de runexpresion"+RunExp.toString());
+                this.jTextArea_Resultado.setText(RunExp.toString());
             } else {
                 JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");
             }
@@ -247,18 +249,8 @@ public class View extends javax.swing.JFrame {
                 + "Paradigmas de Programación\n");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jTextArea_CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea_CodigoMouseClicked
-
-//        if (!ejemplo) {
-//            limpiarCampos();
-//            ejemplo = true;
-//        }
-
-    }//GEN-LAST:event_jTextArea_CodigoMouseClicked
-
     private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
         limpiarCampos();
-        //ejemplo = false;
     }//GEN-LAST:event_jBtn_NuevoActionPerformed
 
 

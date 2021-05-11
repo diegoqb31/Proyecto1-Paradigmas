@@ -7,6 +7,7 @@ package main;
 
 import java.util.ArrayList;
 import logic.Regla;
+import logic.RunExpresion;
 
 /**
  * @author Carlos Chacon Vargas
@@ -19,14 +20,15 @@ public class ValoresPruebaParser {
     private final ArrayList<String> symbols, vars, markers;
     private final ArrayList<Regla> reglas;
     private String expression;
-    private static ValoresPruebaParser instance = null;
-
+    private static final ValoresPruebaParser instance = null;
+    private RunExpresion exp;
+    
     private ValoresPruebaParser() {
-        this.symbols = new ArrayList<String>();
+        this.symbols = new ArrayList<>();
 
-        this.vars = new ArrayList<String>();
-        this.markers = new ArrayList<String>();
-        this.reglas = new ArrayList<Regla>();
+        this.vars = new ArrayList<>();
+        this.markers = new ArrayList<>();
+        this.reglas = new ArrayList<>();
         this.expression = new String();
         creandoValores();
     }
@@ -37,20 +39,6 @@ public class ValoresPruebaParser {
 
     private void creandoValores() {
 
-        /*
-    p1. Fx -> xF
-    p2. xF -> x# (p4)
-    p3. x -> Fx
-    p4. Gx# -> #x (p4)
-    p5. #G -> ^.
-    p6. Gxy -> yGx (p4)
-    p7. x -> Gx (p4)
-    p8. # -> ^.
-
-    1. Fx -> xF
-    2. xF -> x#.
-    3. x -> Fx
-         */
         symbols.add("a");
         symbols.add("b");
         symbols.add("c");
