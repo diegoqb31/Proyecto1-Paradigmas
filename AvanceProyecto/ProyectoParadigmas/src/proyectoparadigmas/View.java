@@ -112,24 +112,34 @@ public class View extends javax.swing.JFrame {
         });
 
         jBtn_Debug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bug.png"))); // NOI18N
+<<<<<<< HEAD
         jBtn_Debug.setText("Debug");
         jBtn_Debug.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtn_DebugActionPerformed(evt);
             }
         });
+=======
+        jBtn_Debug.setText("Debuger");
+>>>>>>> 4009e1f918ae7d8f7079d27008d21fcdef66ae85
 
         jBtn_Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/stop.png"))); // NOI18N
         jBtn_Stop.setText("Stop");
+        jBtn_Stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtn_StopActionPerformed(evt);
+            }
+        });
 
         jBtn_Nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compiler.png"))); // NOI18N
-        jBtn_Nuevo.setText("Nuevo");
+        jBtn_Nuevo.setText("New");
         jBtn_Nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtn_NuevoActionPerformed(evt);
             }
         });
 
+        Next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/next-button.png"))); // NOI18N
         Next.setText("Next");
         Next.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -201,7 +211,7 @@ public class View extends javax.swing.JFrame {
                             .addComponent(jBtn_Run, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jBtn_Debug, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(jBtn_Debug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jBtn_Stop, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -235,10 +245,17 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
+        String codigo = jTextArea_Codigo.getText();
+        String exp = jTextArea_Expression.getText();
 
-
+        if ((codigo == null || codigo.equals("")) && (exp == null || exp.equals(""))) {
+            JOptionPane.showMessageDialog(null, "Los campos codigo y expresion estan vacios");
+        } else if ((codigo == null || codigo.equals(""))) {
+            JOptionPane.showMessageDialog(null, "Ingrese el codigo");
+        } else if ((exp == null || exp.equals(""))) {
+            JOptionPane.showMessageDialog(null, "Ingrese la expresion");
+        }
     }//GEN-LAST:event_jBtn_RunActionPerformed
-
 
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
         limpiarCampos();
@@ -262,17 +279,16 @@ public class View extends javax.swing.JFrame {
 
     private void jTextArea_CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea_CodigoMouseClicked
 
-        if (!ejemplo) {
-            limpiarCampos();
-            ejemplo = true;
-        }
-
+//        if (!ejemplo) {
+//            limpiarCampos();
+//            ejemplo = true;
+//        }
     }//GEN-LAST:event_jTextArea_CodigoMouseClicked
 
     private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
 
         limpiarCampos();
-        ejemplo = false;
+        // ejemplo = false;
 
     }//GEN-LAST:event_jBtn_NuevoActionPerformed
 
@@ -284,7 +300,6 @@ public class View extends javax.swing.JFrame {
         this.getRunExp().resume();
     }//GEN-LAST:event_NextMouseClicked
 
-
     private void jBtn_RunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtn_RunMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jBtn_RunMouseEntered
@@ -295,7 +310,8 @@ public class View extends javax.swing.JFrame {
         String valor_expresion = jTextArea_Expression.getText();
         this.debug = false;
 
-        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
+        Highlighter.HighlightPainter cyanPainter
+                = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
 
         try {
             jTextArea_Codigo.getHighlighter().addHighlight(8, 24, cyanPainter);
@@ -316,16 +332,26 @@ public class View extends javax.swing.JFrame {
 
             parser.leerCodigo(codigo);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+            RunExpresion expresion = new RunExpresion(parser, valor_expresion);
+            this.setRunExp(expresion);
 
+            System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
+            jTextArea_Resultado.setText(this.getRunExp().toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+
+<<<<<<< HEAD
         RunExpresion expresion = new RunExpresion(parser, valor_expresion, this, debug);
         this.setRunExp(expresion);
+=======
+        }
+>>>>>>> 4009e1f918ae7d8f7079d27008d21fcdef66ae85
 
         //  System.out.printf("Expresion:%s%n", valor_expresion);
         //System.out.printf("Resultado del parser:%n%s%n", parser);
         // this.getRunExp().calcularValoresPrueba();
+<<<<<<< HEAD
         //System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
         jTextArea_Resultado.setText(this.getRunExp().getResultado().toString());
 
@@ -376,6 +402,13 @@ public class View extends javax.swing.JFrame {
     public JTextArea getjTextArea_Resultado() {
         return jTextArea_Resultado;
     }
+=======
+    }//GEN-LAST:event_jBtn_RunMouseClicked
+
+    private void jBtn_StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_StopActionPerformed
+        RunExp.stop(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jBtn_StopActionPerformed
+>>>>>>> 4009e1f918ae7d8f7079d27008d21fcdef66ae85
 
     private void limpiarCampos() {
         jTextArea_Codigo.setText("");
@@ -406,5 +439,5 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenu menuArchivo;
     // End of variables declaration//GEN-END:variables
 
-    private boolean ejemplo = false;
+    // private boolean ejemplo = false;
 }

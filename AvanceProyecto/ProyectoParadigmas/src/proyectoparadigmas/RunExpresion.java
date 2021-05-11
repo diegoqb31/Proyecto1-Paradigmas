@@ -65,8 +65,11 @@ p5: #G -> ^.
 p6: Gxy -> yGx (p4)
 p7: x -> Gx (p4)
 p8: # -> ^.
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> 4009e1f918ae7d8f7079d27008d21fcdef66ae85
      */
     private String expresionPrincipal;
 
@@ -574,5 +577,12 @@ p8: # -> ^.
         }
         return false;
     }
+    
+    public void stop(){
+       exit = true;
+    }
 
+     public void continuar(){
+       exit = false;
+    }
 }
