@@ -70,8 +70,13 @@ public class Regla {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(String.format(" %s: %s -> %s %s", this.identicador, this.primeraRegla, this.trancision, this.salto));
+    String aux= salto;
+    if(!salto.equals("")){
+    aux="("+String.valueOf(aux.charAt(1))+")";
+    }
+        s.append(String.format(" %s: %s -> %s %s", this.identicador, this.primeraRegla, this.trancision, aux));
 
+       
         return s.toString();
     }
 }

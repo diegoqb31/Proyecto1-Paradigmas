@@ -181,17 +181,31 @@ public class ViewDebugger extends javax.swing.JFrame {
 
         posicion++;
 
+            toDebug(parser.toString(),listaDebugger.get(posicion).getIdenticador());
     }else{
         jBtnSiguiente.setEnabled(false);
         }
     }//GEN-LAST:event_jBtnSiguienteActionPerformed
 
     
-    private void toDebug(String p){
+    private void toDebug(String p, String id){
+        String [] pp=p.split("\n");
+        String ptr="";
+        for (String string : pp) {
+            System.out.println(string);
+            
+            if(string.contains(id)){
+             string+="<--";
+            }
+            
+            ptr+=string+"\n";
+           
+        }
         
         StringBuilder s = new StringBuilder();
         
         
+        this.jTextArea_Reglas.setText(ptr);
 
         //return s.toString();
         
