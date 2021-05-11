@@ -1,19 +1,11 @@
 package proyectoparadigmas;
 
 import archivos.AbrirArchivos;
+import archivos.Debugger.ViewDebugger;
 import static archivos.GuardarArchivo.guardarComo;
-import java.awt.Color;
-import static java.awt.Color.blue;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
 import parser.Parser;
 
 /**
@@ -97,14 +89,6 @@ public class View extends javax.swing.JFrame {
 
         jBtn_Run.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/play.png"))); // NOI18N
         jBtn_Run.setText("Run");
-        jBtn_Run.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBtn_RunMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jBtn_RunMouseEntered(evt);
-            }
-        });
         jBtn_Run.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtn_RunActionPerformed(evt);
@@ -230,9 +214,11 @@ public class View extends javax.swing.JFrame {
                 parser.leerCodigo(codigo);
                 RunExpresion expresion = new RunExpresion(parser, valor_expresion, debug);
                 this.setRunExp(expresion);
-                ViewDebug viewDebug = new ViewDebug(parser, this.getRunExp(),valor_expresion);
-                this.getRunExp().setView(viewDebug);
-                viewDebug.setVisible(true);
+//                ViewDebug viewDebug = new ViewDebug(parser, this.getRunExp(),valor_expresion);
+//                this.getRunExp().setView(viewDebug);
+//                viewDebug.setVisible(true);
+
+                this.jTextArea_Resultado.setText(expresion.toString());
             } else {
                 JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");
             }
@@ -266,32 +252,29 @@ public class View extends javax.swing.JFrame {
 
     private void jTextArea_CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextArea_CodigoMouseClicked
 
-        if (!ejemplo) {
-            limpiarCampos();
-            ejemplo = true;
-        }
+//        if (!ejemplo) {
+//            limpiarCampos();
+//            ejemplo = true;
+//        }
 
     }//GEN-LAST:event_jTextArea_CodigoMouseClicked
 
     private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
         limpiarCampos();
-        ejemplo = false;
+        //ejemplo = false;
     }//GEN-LAST:event_jBtn_NuevoActionPerformed
 
 
-    private void jBtn_RunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtn_RunMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBtn_RunMouseEntered
-
-    private void jBtn_RunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtn_RunMouseClicked
-
-    }//GEN-LAST:event_jBtn_RunMouseClicked
-
     private void jBtn_DebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_DebugActionPerformed
 
-        debug = true;
-        this.jBtn_Run.doClick();
+        //   debug = true;
+//        this.jBtn_Run.doClick();
+        ViewDebugger d = new ViewDebugger();
+        System.out.println("lista de debugger"+RunExp.getListaDebugger());
+ d.setListaDebugger(RunExp.getListaDebugger());
+        d.setVisible(true);
 
+       
     }//GEN-LAST:event_jBtn_DebugActionPerformed
 
     private void isDebugger() {
@@ -338,5 +321,5 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenu menuArchivo;
     // End of variables declaration//GEN-END:variables
 
-    private boolean ejemplo = false;
+    // private boolean ejemplo = false;
 }

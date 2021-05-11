@@ -7,9 +7,9 @@ Bryan Sanchez Brenes
  */
 package proyectoparadigmas;
 
+import archivos.Debugger.Debugger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Consumer;
 import parser.Regla;
 import parser.Parser;
 import parser.ValoresPruebaParser;
@@ -26,6 +26,7 @@ public class RunExpresion implements Runnable {
     private ArrayList<String> variables;
     private ArrayList<String> markers;
     private ArrayList<Regla> Reglas;
+    private ArrayList<Debugger> listaDebugger;
     private String expresion;
     private ArrayList<String> resultado;
     private boolean exit;
@@ -35,7 +36,7 @@ public class RunExpresion implements Runnable {
     private boolean end = false;
     ViewDebug view;
 
-    public RunExpresion(Parser parser, String expresion,  boolean debug) {
+    public RunExpresion(Parser parser, String expresion, boolean debug) {
         this.simbolos = parser.getSymbols();
         this.variables = parser.getVars();
         this.markers = parser.getMarkers();;
@@ -44,6 +45,7 @@ public class RunExpresion implements Runnable {
         this.resultado = new ArrayList<>();
         this.exit = false;
         this.debug = debug;
+        this.listaDebugger = new ArrayList<>();
         this.t = new Thread(this, "run");
         this.t.start();
 
@@ -72,6 +74,14 @@ p8: # -> ^.
     private String expresionArchivo = "";
 
     Parser parser;
+
+    public void setListaDebugger(ArrayList<Debugger> listaDebugger) {
+        this.listaDebugger = listaDebugger;
+    }
+
+    public ArrayList<Debugger> getListaDebugger() {
+        return listaDebugger;
+    }
 
     public void setExpresionArchivo(String expresionArchivo) {
         this.expresionArchivo = expresionArchivo;
@@ -127,7 +137,7 @@ p8: # -> ^.
         this.resultado = new ArrayList<>();
         this.t = new Thread(this, "run");
         this.t.start();
-        //calcular();
+
     }
 
     public void setSimbolos(ArrayList<String> simbolos) {
@@ -469,6 +479,11 @@ p8: # -> ^.
         }
     }
 
+    
+    public void agregarDatosDebugger(String id, String regla1, String regla2, String expresion){
+        Debugger debugger = new Debugger(id,regla1,regla2,expresion);
+                    listaDebugger.add(debugger);
+    }
     @Override
     public void run() {
         int i = 0;
@@ -477,8 +492,9 @@ p8: # -> ^.
 
             // int estado = 0;
             String aux = "";
-            
+
             while (estado < Reglas.size()) {
+
                 aux = contiene(expresion, Reglas.get(estado).getPrimeraRegla());
                 if (!aux.equals("")) {
 
@@ -490,13 +506,19 @@ p8: # -> ^.
 
                     System.out.print(expresion);
 
+                
+                    agregarDatosDebugger(Reglas.get(estado).getIdenticador(), aux, Reglas.get(estado).getTrancision(), expresion);
+                    
                     if (Reglas.get(estado).isFin()) {
                         resultado.add("Resultado-> " + expresion);
+
                         end = true;
                         this.view.getjTextArea_Resultado().setText(this.toString());
                         this.stop(true);
                         break;
                     }
+
+                   
 
                     if (!Reglas.get(estado).getSalto().equals("")) {
                         estado = cambiarEstado(estado, Reglas) - 1;

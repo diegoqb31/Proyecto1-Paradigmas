@@ -10,7 +10,7 @@ public class Regla {
 
     private String identicador, primeraRegla, trancision, salto;
     private boolean fin;
-    
+
     public Regla() {
         this.identicador = "";
         this.primeraRegla = "";
@@ -18,8 +18,6 @@ public class Regla {
         this.salto = "";
         this.fin = false;
     }
-    
-    
 
     public Regla(String identicador, String primeraRegla, String trancision, String salto) {
         this.identicador = identicador;
@@ -68,12 +66,12 @@ public class Regla {
     public String getSalto() {
         return salto;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append(String.format(" %s: %s -> %s %s", this.identicador, this.primeraRegla, this.trancision, this.salto));
-        
+
         return s.toString();
     }
 }

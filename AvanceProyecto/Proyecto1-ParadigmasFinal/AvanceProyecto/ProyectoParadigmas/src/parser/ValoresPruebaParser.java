@@ -48,16 +48,15 @@ public class ValoresPruebaParser {
     2. xF -> x#.
     3. x -> Fx
          */
-        
         symbols.add("a");
         symbols.add("b");
         symbols.add("c");
-        
+
         vars.add("x");
         vars.add("y");
         vars.add("z");
         vars.add("w");
-        
+
         markers.add("F");
         markers.add("G");
         markers.add("#");

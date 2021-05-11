@@ -1,15 +1,8 @@
 package proyectoparadigmas;
 
-import archivos.AbrirArchivos;
-import static archivos.GuardarArchivo.guardarComo;
 import java.awt.Color;
-import static java.awt.Color.blue;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
