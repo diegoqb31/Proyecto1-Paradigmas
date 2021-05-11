@@ -17,16 +17,19 @@ public class Debugger {
     String primeraRegla;
     String trancision;
     String expresion;
+    String condicion;
 
-    public Debugger(String identicador, String primeraRegla, String trancision, String expresion) {
+    public Debugger(String identicador, String primeraRegla, String trancision,
+            String condicion, String expresion) {
         this.identicador = identicador;
         this.primeraRegla = primeraRegla;
         this.trancision = trancision;
         this.expresion = expresion;
+        this.condicion=condicion;
     }
     
     public Debugger(){
-        this(new String(),new String(), new String(),new String());
+        this(new String(),new String(), new String(),new String(),new String());
     }
 
     public String getIdenticador() {
@@ -60,6 +63,14 @@ public class Debugger {
     public void setExpresion(String expresion) {
         this.expresion = expresion;
     }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
     
     
 
@@ -71,8 +82,9 @@ public class Debugger {
         s.append(String.format("identicador:%s "
                 + "PrimeraRegla:%s "
                 + "trancision:%s "
-                + "expresion:%s%n"
-               , identicador,primeraRegla,trancision,expresion));
+                + "Condición:%s "
+                + "expresion:%s"
+               , identicador,primeraRegla,trancision,condicion,expresion));
         
         return s.toString();
     }

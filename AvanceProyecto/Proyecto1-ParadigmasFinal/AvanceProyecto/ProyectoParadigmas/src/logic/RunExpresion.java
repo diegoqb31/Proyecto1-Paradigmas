@@ -403,7 +403,7 @@ public class RunExpresion implements Runnable {
     }
 
     private void agregarDatosDebugger(String id, String regla1, String regla2, String expresion) {
-        Debugger debugger = new Debugger(id, regla1, regla2, expresion);
+        Debugger debugger = new Debugger(id, regla1, regla2,"aplica", expresion);
         listaDebugger.add(debugger);
     }
     
@@ -418,7 +418,7 @@ p6: Gxy -> yGx (p4)
 p7: x -> Gx (p4)
 p8: # -> ^.
     */
-    private void calcularExpresion() {
+    public void calcularExpresion() {
         String aux = "";
 
         while (estado < Reglas.size()) {

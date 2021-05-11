@@ -89,28 +89,29 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="label_Expression" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane_Expression" alignment="0" min="-2" pref="471" max="-2" attributes="0"/>
-                  <Component id="jScrollPane_Codigo" alignment="0" min="-2" pref="471" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane_Resultado" min="-2" pref="326" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jBtn_Nuevo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jBtn_Run" alignment="0" max="32767" attributes="0"/>
+                  <Component id="label_Expression" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane_Codigo" alignment="0" min="-2" pref="485" max="-2" attributes="0"/>
+                          <Component id="jScrollPane_Expression" alignment="0" min="-2" pref="471" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jBtn_Debug" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="jBtn_Stop" min="-2" pref="99" max="-2" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jBtn_Run" min="-2" pref="101" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+                              <Component id="jBtn_Debug" min="-2" pref="113" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jBtn_Nuevo" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane_Resultado" min="-2" pref="488" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,25 +120,24 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jScrollPane_Codigo" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jScrollPane_Resultado" alignment="1" pref="302" max="32767" attributes="0"/>
+                  <Component id="jScrollPane_Resultado" pref="480" max="32767" attributes="0"/>
+                  <Component id="jScrollPane_Codigo" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="label_Expression" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane_Expression" min="-2" pref="60" max="-2" attributes="0"/>
-                  <Component id="jBtn_Stop" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jBtn_Run" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="jBtn_Debug" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                          <Component id="jBtn_Nuevo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jBtn_Nuevo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -211,20 +211,10 @@
           <Image iconType="3" name="/imagenes/bug.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Debug"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_DebugActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="jBtn_Stop">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/imagenes/stop.png"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Stop"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jBtn_Nuevo">
       <Properties>
