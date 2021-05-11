@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import proyectoparadigmas.View;
+import views.View;
 
 /**
  * @author Carlos Chacon Vargas

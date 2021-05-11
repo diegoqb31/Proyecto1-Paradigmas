@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package archivos.Debugger;
+package views;
 
+import logic.Debugger;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author bryan
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class ViewDebugger extends javax.swing.JFrame {
 
@@ -62,10 +65,7 @@ public class ViewDebugger extends javax.swing.JFrame {
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Regla", "Producción", "Traducción", "Expresión"
@@ -121,17 +121,19 @@ public class ViewDebugger extends javax.swing.JFrame {
        DefaultTableModel modelo=(DefaultTableModel) this.jTable.getModel(); 
         
         Object [] fila=new Object[4]; 
-        fila[0]=listaDebugger.get(1).getIdenticador();
-        fila[1]=listaDebugger.get(1). getPrimeraRegla();
-        fila[2]=listaDebugger.get(1).getTrancision();
-        fila[3]=listaDebugger.get(1).getExpresion();
+        fila[0]=listaDebugger.get(posicion).getIdenticador();
+        fila[1]=listaDebugger.get(posicion). getPrimeraRegla();
+        fila[2]=listaDebugger.get(posicion).getTrancision();
+        fila[3]=listaDebugger.get(posicion).getExpresion();
  
         modelo.addRow(fila); 
         this.jTable.setModel(modelo);
 
+        posicion++;
     }//GEN-LAST:event_jBtnSiguienteActionPerformed
 
 
+    int posicion=0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnDetener;
     private javax.swing.JButton jBtnSiguiente;

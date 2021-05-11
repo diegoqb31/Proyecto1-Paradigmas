@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package archivos.Debugger;
+package logic;
 
 /**
- *
- * @author bryan
+ * @author Carlos Chacon Vargas
+ * @author Bryan Sanchez Brenes
+ * @author Diego Quiros Brenes
+ * @author Alessandro Fazio Perez
  */
 public class Debugger {
 

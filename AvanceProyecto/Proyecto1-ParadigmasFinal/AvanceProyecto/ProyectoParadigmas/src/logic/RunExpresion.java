@@ -1,18 +1,9 @@
-/*
-Autores:
-Diego Quiros Brenes
-Carlos Chacon Vargas
-Alessandro Fazio Perez
-Bryan Sanchez Brenes
- */
-package proyectoparadigmas;
+package logic;
 
-import archivos.Debugger.Debugger;
+import logic.Debugger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import parser.Regla;
-import parser.Parser;
-import parser.ValoresPruebaParser;
+import main.ValoresPruebaParser;
 
 /**
  * @author Carlos Chacon Vargas
@@ -34,12 +25,12 @@ public class RunExpresion implements Runnable {
     Thread t;
     private int estado = 0;
     private boolean end = false;
-    ViewDebug view;
+   
 
     public RunExpresion(Parser parser, String expresion, boolean debug) {
         this.simbolos = parser.getSymbols();
         this.variables = parser.getVars();
-        this.markers = parser.getMarkers();;
+        this.markers = parser.getMarkers();
         this.Reglas = parser.getReglas();
         this.expresion = expresion;
         this.resultado = new ArrayList<>();
@@ -98,14 +89,6 @@ p8: # -> ^.
     public ArrayList<String> getMarkers() {
         return markers;
 
-    }
-
-    public void setView(ViewDebug view) {
-        this.view = view;
-    }
-
-    public ViewDebug getView() {
-        return view;
     }
 
     public ArrayList<Regla> getReglas() {
@@ -513,7 +496,7 @@ p8: # -> ^.
                         resultado.add("Resultado-> " + expresion);
 
                         end = true;
-                        this.view.getjTextArea_Resultado().setText(this.toString());
+                        
                         this.stop(true);
                         break;
                     }
@@ -524,7 +507,7 @@ p8: # -> ^.
                         estado = cambiarEstado(estado, Reglas) - 1;
 
                         if (this.stop(debug)) {
-                            this.view.getjTextArea_Resultado().setText(this.toString());
+                            
                             break;
                         }
                         continue;
@@ -533,7 +516,7 @@ p8: # -> ^.
                     estado = 0;
 
                     if (this.stop(debug)) {
-                        this.view.getjTextArea_Resultado().setText(this.toString());
+                        
                         break;
                     }
                     continue;

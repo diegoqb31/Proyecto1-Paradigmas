@@ -1,12 +1,12 @@
-package proyectoparadigmas;
+package views;
 
 import archivos.AbrirArchivos;
-import archivos.Debugger.ViewDebugger;
 import static archivos.GuardarArchivo.guardarComo;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import parser.Parser;
+import logic.Parser;
+import logic.RunExpresion;
 
 /**
  * @author Carlos Chacon Vargas
@@ -214,10 +214,7 @@ public class View extends javax.swing.JFrame {
                 parser.leerCodigo(codigo);
                 RunExpresion expresion = new RunExpresion(parser, valor_expresion, debug);
                 this.setRunExp(expresion);
-//                ViewDebug viewDebug = new ViewDebug(parser, this.getRunExp(),valor_expresion);
-//                this.getRunExp().setView(viewDebug);
-//                viewDebug.setVisible(true);
-
+                
                 this.jTextArea_Resultado.setText(expresion.toString());
             } else {
                 JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");

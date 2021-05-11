@@ -1,4 +1,4 @@
-package parser;
+package logic;
 
 /**
  * @author Carlos Chacon Vargas
