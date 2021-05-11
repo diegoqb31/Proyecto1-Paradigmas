@@ -1,0 +1,33 @@
+
+% Invierte una hilera.
+Symbols abc
+vars x, y
+marks F, G
+
+p1. Fx -> xF
+p2. xF -> x# (p4)
+p3. x -> Fx
+p4. Gx# -> #x (p4)
+p5. #G -> ^.
+p6. Gxy -> yGx (p4)
+p7. x -> Gx (p4)
+p8. # -> ^.
+
+-----------------------------
+
+abc     p3
+Fabc    p1
+aFbc    p1
+abFc    p1
+abcF    p2
+abc#    p7
+Gabc#   p6
+bGac#   p6
+bcGa#   p4
+bc#a    p7
+Gbc#a   p6
+cGb#a   p4
+c#ba    p7
+Gc#ba   p4 
+#cba    p8
+cba

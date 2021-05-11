@@ -1,0 +1,15 @@
+
+#symbols <lista-simbolos>;
+#vars <lista-variables>;
+#markers <lista-marcadores>;
+
+[<etiqueta>:] <patrón> -> <sustitución> [.|(<etiqueta)];
+
+% [<comentario>]
+
+#symbols abcdefghijklmnopqrstuvwxyz0123456789
+#vars wxyz
+#markers αβγδ
+
+Caracter de escape: \
+Se pueden utilizar expresiones regulares para reconocer y sustituir los patrones.
