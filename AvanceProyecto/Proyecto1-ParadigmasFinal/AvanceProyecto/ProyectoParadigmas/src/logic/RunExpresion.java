@@ -145,14 +145,15 @@ public class RunExpresion implements Runnable {
         return String.valueOf(Arrays.copyOf(str, index));
     }
 
-    private String sRegla(String pR, String sR) {
+    private String sRegla(String pR, String sR,String pR2) {
         /* sR -> yGx --> aGb  zyGx <-- Gabc  a:x:0  b:y:1 c:z:2
            pR -> Gab --> bGa  
         
         1      0    ...             */
 
         String simUtilizados = extraerSimbolos(pR, false);
-        String varUtilizadas = extraerSimbolos(sR, true);
+        String varUtilizadas = extraerSimbolos(pR2, true);
+        
         ArrayList<String> repetidos = new ArrayList();
         ArrayList<String> sim = new ArrayList();
         int contSim = 0;
@@ -164,6 +165,7 @@ public class RunExpresion implements Runnable {
             }
 
             if (varUtilizadas.length() > 1) {
+                varUtilizadas = extraerSimbolos(sR, true);
                 simUtilizados = verficarPosicionVariable(varUtilizadas, sim);
             }
 
@@ -404,7 +406,18 @@ public class RunExpresion implements Runnable {
         Debugger debugger = new Debugger(id, regla1, regla2, expresion);
         listaDebugger.add(debugger);
     }
-
+    
+    
+    /*
+    p1: Fx -> xF
+p2: xF -> x# (p4)
+p3: x -> Fx
+p4: Gx# -> #x (p4)
+p5: #G -> ^.
+p6: Gxy -> yGx (p4)
+p7: x -> Gx (p4)
+p8: # -> ^.
+    */
     private void calcularExpresion() {
         String aux = "";
 
@@ -414,18 +427,19 @@ public class RunExpresion implements Runnable {
             if (!aux.equals("")) {
 
                 if (!Reglas.get(estado).getTrancision().equals("^")) {
-                    expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision()));
+                    expresion = expresion.replaceFirst(aux, sRegla(aux, Reglas.get(estado).getTrancision(),Reglas.get(estado).getPrimeraRegla()));
                 }
 
                 resultado.add(Reglas.get(estado).getIdenticador() + "-> " + expresion);
 
                 //System.out.print(expresion);
 
-                agregarDatosDebugger(Reglas.get(estado).getIdenticador(), aux, Reglas.get(estado).getTrancision(), expresion);
+                
 
                 if (Reglas.get(estado).isFin()) {
                     resultado.add("Resultado-> " + expresion);
-
+                    
+                    agregarDatosDebugger(Reglas.get(estado).getIdenticador(), aux, Reglas.get(estado).getTrancision(), expresion);
                     end = true;
 
                     this.stop(true);
@@ -439,6 +453,7 @@ public class RunExpresion implements Runnable {
 
                         break;
                     }
+                    agregarDatosDebugger(Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
                     continue;
                 }
 
@@ -448,9 +463,12 @@ public class RunExpresion implements Runnable {
 
                     break;
                 }
+                agregarDatosDebugger(Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
                 continue;
             }
 
+            agregarDatosDebugger(Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
+            
             estado++;
 
             if (estado == Reglas.size()) {
