@@ -18,6 +18,7 @@ public class View extends javax.swing.JFrame {
 
     private RunExpresion RunExp;
     private boolean debug = false;
+    private Parser parser;
 
     public RunExpresion getRunExp() {
         return RunExp;
@@ -202,7 +203,7 @@ public class View extends javax.swing.JFrame {
                 Parser parser = new Parser();
                 parser.leerCodigo(codigo);
                 RunExpresion expresion = new RunExpresion(parser, valor_expresion, debug);
-
+                this.parser = parser;
                 this.setRunExp(expresion);
                 RunExp.calcularExpresion();
 
@@ -253,7 +254,7 @@ public class View extends javax.swing.JFrame {
         compilar();
         debug = true;
         // this.jBtn_Run.doClick();
-        ViewDebugger d = new ViewDebugger(this);
+        ViewDebugger d = new ViewDebugger(this,parser);
         System.out.printf("lista de debugger:%n%s", RunExp.getListaDebugger());
         d.setListaDebugger(RunExp.getListaDebugger());
 
