@@ -33,9 +33,9 @@ public class RunExpresion implements Runnable {
     Thread t;
     private int estado = 0;
     private boolean end = false;
-    View view;
+    ViewDebug view;
 
-    public RunExpresion(Parser parser, String expresion, View view, boolean debug) {
+    public RunExpresion(Parser parser, String expresion,  boolean debug) {
         this.simbolos = parser.getSymbols();
         this.variables = parser.getVars();
         this.markers = parser.getMarkers();;
@@ -45,7 +45,6 @@ public class RunExpresion implements Runnable {
         this.exit = false;
         this.debug = debug;
         this.t = new Thread(this, "run");
-        this.view = view;
         this.t.start();
 
     }
@@ -54,7 +53,7 @@ public class RunExpresion implements Runnable {
 #symbols abcdefghijklmnopqrstuvwxyz0123456789
 #vars wxyz
 #markers GF#^
-
+    
 % Invierte una hilera.
 
 p1: Fx -> xF
@@ -94,6 +93,18 @@ p8: # -> ^.
 
     }
 
+    public void setView(ViewDebug view) {
+        this.view = view;
+    }
+
+    public ViewDebug getView() {
+        return view;
+    }
+
+    public ArrayList<Regla> getReglas() {
+        return Reglas;
+    }
+
     public String getExpresionArchivo() {
         return expresionArchivo;
     }
@@ -131,53 +142,6 @@ p8: # -> ^.
     }
 
     public RunExpresion() {
-
-    }
-
-    public ArrayList<String> datosQuemados() {
-
-        ArrayList<Regla> Reglas = new ArrayList();
-
-        Regla r1 = new Regla("p1", "Fx", "xF", "");
-        Regla r2 = new Regla("p2", "xF", "x#", "(p4)");
-        Regla r3 = new Regla("p3", "x", "Fx", "");
-        Regla r4 = new Regla("p4", "Gx#", "#x", "(p4)");
-        Regla r5 = new Regla("p5", "#G", ".", "");
-        Regla r6 = new Regla("p6", "Gxy", "yGx", "(p4)");
-        Regla r7 = new Regla("p7", "x", "Gx", "(p4)");
-        Regla r8 = new Regla("p8", "#", ".", "");
-
-        ArrayList<String> mar = new ArrayList();
-        mar.add("F");
-        mar.add("G");
-        mar.add("#");
-        mar.add("^");
-
-        // extraerSimbolos("FaabcGabbbbaaacc", mar);
-        variables.add("x");
-        variables.add("y");
-        variables.add("z");
-        variables.add("w");
-
-        simbolos.add("a");
-        simbolos.add("b");
-        simbolos.add("c");
-
-        this.setMarkers(mar);
-
-        r8.setFin(true);
-        r8.setFin(true);
-
-        Reglas.add(r1);
-        Reglas.add(r2);
-        Reglas.add(r3);
-        Reglas.add(r4);
-        Reglas.add(r5);
-        Reglas.add(r6);
-        Reglas.add(r7);
-        Reglas.add(r8);
-
-        return new ArrayList<String>();
 
     }
 
@@ -532,6 +496,7 @@ p8: # -> ^.
                     if (Reglas.get(estado).isFin()) {
                         resultado.add("Resultado-> " + expresion);
                         end = true;
+                        this.view.getjTextArea_Resultado().setText(this.toString());
                         this.stop(true);
                         break;
                     }

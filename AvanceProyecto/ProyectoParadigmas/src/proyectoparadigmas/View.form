@@ -105,10 +105,14 @@
                           <Component id="jBtn_Run" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+<<<<<<< Updated upstream
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jBtn_Debug" max="32767" attributes="0"/>
                           <Component id="Next" max="32767" attributes="0"/>
                       </Group>
+=======
+                      <Component id="jBtn_Debug" min="-2" pref="113" max="-2" attributes="0"/>
+>>>>>>> Stashed changes
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="jBtn_Stop" min="-2" pref="99" max="-2" attributes="0"/>
                   </Group>
@@ -137,10 +141,7 @@
                           <Component id="jBtn_Debug" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jBtn_Nuevo" max="32767" attributes="0"/>
-                          <Component id="Next" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jBtn_Nuevo" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -249,6 +250,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtn_NuevoActionPerformed"/>
       </Events>
     </Component>
+<<<<<<< Updated upstream
     <Component class="javax.swing.JButton" name="Next">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -261,5 +263,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NextActionPerformed"/>
       </Events>
     </Component>
+=======
+>>>>>>> Stashed changes
   </SubComponents>
 </Form>

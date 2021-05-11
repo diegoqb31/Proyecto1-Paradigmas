@@ -44,10 +44,14 @@ public class Parser {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(String.format(" Symbols: %s%n Vars: %s%n Markers: %s%n Reglas:%n", symbols, vars, markers));
 
         for (Regla regla : this.reglas) {
+            
             s.append(regla.toString());
+            if(regla.isFin()){
+                s.append(".");
+            }
+            s.append("\n");
         }
 
         return s.toString();

@@ -25,7 +25,8 @@ import parser.Parser;
 public class View extends javax.swing.JFrame {
 
     private RunExpresion RunExp;
-    private boolean debug;
+    private boolean debug = false;
+    Parser parser = new Parser();
 
     public RunExpresion getRunExp() {
         return RunExp;
@@ -62,7 +63,6 @@ public class View extends javax.swing.JFrame {
         jBtn_Debug = new javax.swing.JButton();
         jBtn_Stop = new javax.swing.JButton();
         jBtn_Nuevo = new javax.swing.JButton();
-        Next = new javax.swing.JButton();
         jMenuBar = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         abrirArchivo = new javax.swing.JMenuItem();
@@ -139,6 +139,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+<<<<<<< Updated upstream
         Next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/next-button.png"))); // NOI18N
         Next.setText("Next");
         Next.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -152,6 +153,8 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+=======
+>>>>>>> Stashed changes
         menuArchivo.setText("Archivos");
 
         abrirArchivo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -210,9 +213,13 @@ public class View extends javax.swing.JFrame {
                             .addComponent(jBtn_Nuevo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jBtn_Run, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+<<<<<<< Updated upstream
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jBtn_Debug, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
+                        .addComponent(jBtn_Debug, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+>>>>>>> Stashed changes
                         .addGap(18, 18, 18)
                         .addComponent(jBtn_Stop, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -235,9 +242,7 @@ public class View extends javax.swing.JFrame {
                             .addComponent(jBtn_Run, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jBtn_Debug, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jBtn_Nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Next, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jBtn_Nuevo)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -245,6 +250,7 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtn_RunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_RunActionPerformed
+<<<<<<< Updated upstream
         String codigo = jTextArea_Codigo.getText();
         String exp = jTextArea_Expression.getText();
 
@@ -255,6 +261,30 @@ public class View extends javax.swing.JFrame {
         } else if ((exp == null || exp.equals(""))) {
             JOptionPane.showMessageDialog(null, "Ingrese la expresion");
         }
+=======
+
+        String codigo = jTextArea_Codigo.getText();
+        String valor_expresion = jTextArea_Expression.getText();
+        isDebugger();
+        boolean vacio = !this.getjTextArea_Codigo().getText().equals("") && !this.jTextArea_Expression.getText().equals("");
+
+        try {
+            if (vacio) {
+                parser.leerCodigo(codigo);
+                RunExpresion expresion = new RunExpresion(parser, valor_expresion, debug);
+                this.setRunExp(expresion);
+                ViewDebug viewDebug = new ViewDebug(parser, this.getRunExp(),valor_expresion);
+                this.getRunExp().setView(viewDebug);
+                viewDebug.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+>>>>>>> Stashed changes
     }//GEN-LAST:event_jBtn_RunActionPerformed
 
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
@@ -286,8 +316,8 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextArea_CodigoMouseClicked
 
     private void jBtn_NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_NuevoActionPerformed
-
         limpiarCampos();
+<<<<<<< Updated upstream
         // ejemplo = false;
 
     }//GEN-LAST:event_jBtn_NuevoActionPerformed
@@ -299,12 +329,18 @@ public class View extends javax.swing.JFrame {
     private void NextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NextMouseClicked
         this.getRunExp().resume();
     }//GEN-LAST:event_NextMouseClicked
+=======
+        ejemplo = false;
+    }//GEN-LAST:event_jBtn_NuevoActionPerformed
+
+>>>>>>> Stashed changes
 
     private void jBtn_RunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtn_RunMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jBtn_RunMouseEntered
 
     private void jBtn_RunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtn_RunMouseClicked
+<<<<<<< Updated upstream
         Parser parser = new Parser();
         String codigo = jTextArea_Codigo.getText();
         String valor_expresion = jTextArea_Expression.getText();
@@ -354,46 +390,25 @@ public class View extends javax.swing.JFrame {
 <<<<<<< HEAD
         //System.out.printf("Resultado del Run Expression:%n%s%n", this.getRunExp());
         jTextArea_Resultado.setText(this.getRunExp().getResultado().toString());
+=======
+>>>>>>> Stashed changes
 
     }//GEN-LAST:event_jBtn_RunMouseClicked
 
     private void jBtn_DebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtn_DebugActionPerformed
-        Parser parser = new Parser();
-        String codigo = jTextArea_Codigo.getText();
-        String valor_expresion = jTextArea_Expression.getText();
-        this.debug = true;
 
-        Highlighter.HighlightPainter cyanPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.cyan);
-
-        try {
-            jTextArea_Codigo.getHighlighter().addHighlight(3, 3, cyanPainter);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-
-            if (codigo == null || codigo == "" || valor_expresion == null || valor_expresion == "") {
-                throw new Exception("error");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        try {
-            if (!this.getjTextArea_Codigo().getText().equals("") && !this.jTextArea_Expression.getText().equals("")) {
-            parser.leerCodigo(codigo);
-            RunExpresion expresion = new RunExpresion(parser, valor_expresion, this, debug);
-            this.setRunExp(expresion);
-        } else {
-            JOptionPane.showMessageDialog(new JDialog(), "Llene los campos correctamente");
-        }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        debug = true;
+        this.jBtn_Run.doClick();
 
     }//GEN-LAST:event_jBtn_DebugActionPerformed
+
+    private void isDebugger() {
+        if (!debug) {
+            // return false;
+        } else {
+            debug = true;
+        }
+    }
 
     public JTextArea getjTextArea_Codigo() {
         return jTextArea_Codigo;
@@ -419,7 +434,6 @@ public class View extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Next;
     private javax.swing.JMenuItem abrirArchivo;
     private javax.swing.JMenuItem guardarArchivo;
     private javax.swing.JButton jBtn_Debug;
