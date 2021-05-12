@@ -1,9 +1,11 @@
 
 % Duplica cada caracter de la hilera.
 
-1. Fx -> xxF
-2. xF -> x.
-3. x -> Fx
+#markers F
+
+p1: Fx -> xxF
+p2: xF -> x.
+p3: x -> Fx
 
 -----------------------------
 

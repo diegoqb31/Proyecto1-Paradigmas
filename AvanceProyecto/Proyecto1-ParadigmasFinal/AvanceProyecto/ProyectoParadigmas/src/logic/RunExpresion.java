@@ -402,13 +402,13 @@ public class RunExpresion implements Runnable {
         }
     }
 
-    private void agregarDatosDebugger(String apl,String id, String regla1, String regla2, String expresion) {
+    private void agregarDatosDebugger(boolean fin,String apl,String id, String regla1, String regla2, String expresion) {
         String aplica  = "aplica";
         
         if(apl.equals("")){
             aplica = "No aplica";
         }
-        Debugger debugger = new Debugger(id, regla1, regla2,aplica, expresion);
+        Debugger debugger = new Debugger(id, regla1, regla2,aplica, expresion,fin);
         listaDebugger.add(debugger);
     }
     
@@ -443,7 +443,7 @@ p8: # -> ^.
                 if (Reglas.get(estado).isFin()) {
                     resultado.add("Resultado-> " + expresion);
                     
-                    agregarDatosDebugger(aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
+                    agregarDatosDebugger(true,aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
                     end = true;
 
                     this.stop(true);
@@ -457,7 +457,7 @@ p8: # -> ^.
 
                         break;
                     }
-                    agregarDatosDebugger(aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
+                    agregarDatosDebugger(false,aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
                     continue;
                 }
 
@@ -467,11 +467,11 @@ p8: # -> ^.
 
                     break;
                 }
-                agregarDatosDebugger(aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
+                agregarDatosDebugger(false,aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
                 continue;
             }
 
-            agregarDatosDebugger(aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
+            agregarDatosDebugger(false,aux,Reglas.get(estado).getIdenticador(), Reglas.get(estado).getPrimeraRegla(), Reglas.get(estado).getTrancision(), expresion);
             
             estado++;
 

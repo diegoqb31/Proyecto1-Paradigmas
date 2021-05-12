@@ -18,18 +18,20 @@ public class Debugger {
     String trancision;
     String expresion;
     String condicion;
+    boolean fin;
 
     public Debugger(String identicador, String primeraRegla, String trancision,
-            String condicion, String expresion) {
+            String condicion, String expresion,boolean fin) {
         this.identicador = identicador;
         this.primeraRegla = primeraRegla;
         this.trancision = trancision;
         this.expresion = expresion;
         this.condicion=condicion;
+        this.fin = fin;
     }
     
     public Debugger(){
-        this(new String(),new String(), new String(),new String(),new String());
+       // this(new String(),new String(), new String(),new String(),new String(),new Boolean());
     }
 
     public String getIdenticador() {
@@ -71,6 +73,11 @@ public class Debugger {
     public void setCondicion(String condicion) {
         this.condicion = condicion;
     }
+
+    public boolean getFin() {
+        return fin;
+    }
+    
     
     
 

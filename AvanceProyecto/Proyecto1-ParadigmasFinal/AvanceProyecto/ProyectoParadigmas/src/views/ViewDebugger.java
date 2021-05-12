@@ -25,14 +25,14 @@ public class ViewDebugger extends javax.swing.JFrame {
     private ArrayList<Debugger> listaDebugger;
     private JFrame vie;
     private Parser parser;
-    
+
     public ViewDebugger() {
         initComponents();
     }
-    
-      public ViewDebugger(JFrame vie,Parser parser) {
+
+    public ViewDebugger(JFrame vie, Parser parser) {
         initComponents();
-        this.vie=vie;
+        this.vie = vie;
         this.parser = parser;
         this.jTextArea_Reglas.setText(parser.toString());
     }
@@ -168,49 +168,51 @@ public class ViewDebugger extends javax.swing.JFrame {
 
     private void jBtnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSiguienteActionPerformed
         DefaultTableModel modelo = (DefaultTableModel) this.jTable.getModel();
-        
-        if(posicion<listaDebugger.size()){
-        Object[] fila = new Object[4];
-        fila[0] = listaDebugger.get(posicion).getIdenticador();
-        fila[1] = listaDebugger.get(posicion).getPrimeraRegla()+ "-->" +listaDebugger.get(posicion).getTrancision();
-        fila[2] = listaDebugger.get(posicion).getCondicion();
-        fila[3] = listaDebugger.get(posicion).getExpresion();
-        
-        modelo.addRow(fila);
-        this.jTable.setModel(modelo);
 
-        posicion++;
+        if (posicion < listaDebugger.size()) {
+            Object[] fila = new Object[4];
+            fila[0] = listaDebugger.get(posicion).getIdenticador();
+            fila[1] = listaDebugger.get(posicion).getPrimeraRegla() + "-->" + listaDebugger.get(posicion).getTrancision();
+            fila[2] = listaDebugger.get(posicion).getCondicion();
+            fila[3] = listaDebugger.get(posicion).getExpresion();
 
-            toDebug(parser.toString(),listaDebugger.get(posicion).getIdenticador());
-    }else{
-        jBtnSiguiente.setEnabled(false);
+            modelo.addRow(fila);
+            this.jTable.setModel(modelo);
+
+            if (listaDebugger.get(posicion).getFin()) {
+
+                jBtnSiguiente.setEnabled(false);
+
+            }
+
+            posicion++;
+
+            toDebug(parser.toString(), listaDebugger.get(posicion).getIdenticador());
+        } else {
+            jBtnSiguiente.setEnabled(false);
         }
     }//GEN-LAST:event_jBtnSiguienteActionPerformed
 
-    
-    private void toDebug(String p, String id){
-        String [] pp=p.split("\n");
-        String ptr="";
+    private void toDebug(String p, String id) {
+        String[] pp = p.split("\n");
+        String ptr = "";
         for (String string : pp) {
             System.out.println(string);
-            
-            if(string.contains(id)){
-             string+="<--";
+
+            if (string.contains(id)) {
+                string += "<--";
             }
-            
-            ptr+=string+"\n";
-           
+
+            ptr += string + "\n";
+
         }
-        
+
         StringBuilder s = new StringBuilder();
-        
-        
+
         this.jTextArea_Reglas.setText(ptr);
 
-        //return s.toString();
-        
     }
-    
+
     private void jBtnDetenerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDetenerActionPerformed
         // TODO add your handling code here:
         jBtnSiguiente.setEnabled(false);
@@ -223,15 +225,15 @@ public class ViewDebugger extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        
+
         this.setVisible(false);
         vie.setVisible(true);
-         dispose();
+        dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_formWindowClosed
 
     int posicion = 0;
